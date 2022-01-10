@@ -1,0 +1,966 @@
+
+    <!DOCTYPE html>
+    <html lang="he">
+    
+    <head>
+      <meta charset="UTF-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <title>המדריך המלא לטלסקופ</title>
+      <link rel="stylesheet" href="css/style.css">
+
+
+
+     <!-- Chrome, Firefox OS and Opera -->
+     <meta name="theme-color" content="#434a54">
+     <!-- Windows Phone -->
+     <meta name="msapplication-navbutton-color" content="#434a54">
+     <!-- iOS Safari -->
+     <meta name="apple-mobile-web-app-status-bar-style" content="#434a54">
+ 
+ 
+<style>
+
+
+.container-logoClient{
+  position: absolute;
+    left: 0%;
+    width: 100vw;
+    height: 15vh;
+    bottom: 0px;
+    z-index: 8;
+}
+
+
+  body .logoClient {
+      display: block;
+    width: 200px;
+    height: auto;
+    margin: 20px auto;
+    position: absolute;
+    bottom: 5px;
+    left: 50%;
+  }
+
+  .slice-client-loader{
+    opacity: 0;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    z-index: -9;
+    width: 550px !important;
+    animation-name: wraper-client-logo-animation;
+    animation-duration: 9s;
+
+  }
+
+  .slice-client-loader .logo-img{
+    position:absolute;
+    width: 550px;
+    height: 100px;
+    background-repeat: no-repeat;
+    background-size: contain;
+  }
+.slice-client-loader-logo-wrapper{
+  overflow: hidden;
+    width: 0px;
+    display: block;
+    opacity:0;
+    height: 110px;
+    position: absolute;
+    animation-name: client-logo-animation;
+  animation-duration: 4.9s;
+
+}
+@keyframes wraper-client-logo-animation {
+  0%   {width: 550px; opacity:1;z-index: 9;}
+  97%   {width: 550px; opacity:1;z-index: 9;}
+  100%   {width: 550px; opacity:0;z-index: 9;}
+  
+}
+@keyframes client-logo-animation {
+  0%   {width: 0px; opacity:1;z-index: 9;}
+  10%   {width: 30px; opacity:1;z-index: 9;}
+  30%   {width: 96px; opacity:1;z-index: 9;}
+  34%   {width: 110px; opacity:1;z-index: 9;}
+  40%   {width: 200px; opacity:1;z-index: 9;}
+  40.3%   {width: 230px; opacity:1;z-index: 9;}
+  80%   {width: 460px; opacity:1;z-index: 9;}
+  97%   {width: 550px; opacity:1;z-index: 9;}
+  100%   {width: 550px; opacity:0;z-index: 9;}
+  
+}
+
+  .slice-client-loader-back{
+    opacity: 0.3;
+  }
+
+  .hide-after-load{
+    display: none !important;
+  }
+
+  
+  
+</style>   
+
+
+ <script>
+
+ ///////  LOADER
+ setTimeout(function(){ 
+  var hideAfterLoad = document.getElementsByClassName('show-me-after-load');
+
+  for (var i = 0; i < hideAfterLoad.length; i++) {
+    hideAfterLoad[i].classList.remove('hide-after-load');
+}
+
+
+ 
+
+var checkExist = setInterval(function() {
+  if (document.getElementById('slice-client-loader')) {
+     console.log("Exists!");
+     document.getElementById('slice-client-loader').classList.add('hide-after-load');
+     clearInterval(checkExist);
+  }
+}, 500); // check every 500ms
+
+
+  // document.getElementById('slice-client-loader').classList.add('hide-after-load');
+
+///  document.getElementById('frontHeader').classList.remove('hide-after-load')
+
+ },   5200);
+
+
+ var DEBUG = false;
+// ENABLE/DISABLE Console Logs
+if(!DEBUG){ 
+  window.console.log = function() {}
+}
+ </script>
+      <link rel="icon" href="img/favicon.ico" type="image/x-icon">
+      <script src="scorm.js" type="text/javascript"></script>
+      <script type="text/javascript">
+
+      var scormApi = new Scorm({
+          exitValue: null,
+          score: {
+              min: 0,
+              max: 100
+          },
+          rating:0,
+          debugger: function (err, msg, param, value) {
+              console.log('scorm err', err, param, value);
+          }
+      }, function (scormApi, message) { });
+
+      function initCourse() {
+          //scorm.init returns a boolean
+          lmsConnected = scormApi.initialize();
+          //If the scorm.init function succeeded...
+          if (lmsConnected) {
+              console.log('lmsConnected: ', lmsConnected);
+          }
+          window.realScore = -1;
+          window.rating = -1;
+      }
+      function moreScore(num) {
+        if(window.realScore == -1){
+          window.realScore = 0;
+        }
+          window.realScore = window.realScore + num
+      }
+
+
+      function ratingScore(num){
+        window.rating = num;
+      }
+
+
+      function lessScore(num) {
+          window.realScore = window.realScore - num
+      }
+
+      
+      function exitFunc() {
+        console.log('exittttttt');
+         
+          if (scormApi.version !== null) {
+             
+              scormApi.status("completed");
+              if(window.realScore == -1){
+
+              }else{
+                scormApi.score(window.realScore);
+              }
+
+              if(window.rating == -1){
+
+              }else{
+                scormApi.setValue("rating",window.rating);
+              }
+
+
+    
+              if( (window.realScore >= 1) || (window.realScore == -1) ){
+                // scormApi.success("passed");
+
+                var readandtest=true;
+                var readand=$("input[type='checkbox'].Readandsign");
+                if(readand.length > 0) {
+                    for(var i = 0 ; i < readand.length;i++){
+                      if( $(readand[i]).is(':checked') ){
+
+                      }else{
+                          readandtest=false;
+                      }
+                    }
+                    
+
+                    if(readandtest){
+                      scormApi.status("passed");
+
+                    }else{
+                      scormApi.status("failed");
+
+                    }
+                    }else{
+                      scormApi.status("passed");
+                      scormApi.success("passed");
+
+                    }
+             
+
+              }else{
+                scormApi.success();
+
+              }
+              scormApi.terminate();
+
+
+
+          }
+         
+          //window.close();
+      }
+
+      function exitScreen() {
+        window.close();
+      }
+
+
+
+      // my edit for leumi
+      initCourse();
+  </script>
+
+     
+      
+    </head>
+    <body>
+      <div id="loader">
+        <div class="preloader"></div>
+      </div>
+      <div id="LinkUrl"></div> 
+    <div id="fullPageOverlay" class="display-none"></div>
+
+    <!--  ----------------            MENU           ---------------     -->
+
+    
+      <div id="advence-precent" class="bg-color-primary advence-precent-linear" style="width: 1%;"> 0% </div>
+      <div id="scrollIndicator" class="bg-color-primary display-none super-display-none" style="width:1%"></div>
+      <button id="menu-hamburger" class="animated slideInDown box-shadow glossyHover  menu-transition super-display-none" aria-label="Menu">
+      
+
+  <div class="hamburger-line menu-transition first-hamburger-line"></div>
+  <div class="hamburger-line hamburger-line-middle menu-transition"></div>
+  <div class="hamburger-line menu-transition third-hamburger-line"></div>
+
+  <div class="glossy transition"></div>
+
+</button>
+
+    <div id="menu" class="transition">
+
+    <div class="menu-header-bg LinkUrlChange" style="background-image: url(uploads/1641557390885.jpg);">
+    <h1 class="menu-h1 bold">המדריך המלא לטלסקופ</h1>
+
+            <div class="darkOpacity"></div>
+            <div id="advence-precent" class="bg-color-primary" style="width: 1%;"> 0% </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12 col-centered pM-0">
+                <ul class="menu-ul  pM-0">
+
+
+                <li class=" oneHalfRem hoverBgSecondary  transition-half GoToChapter bg-color-secondary" data-tos="first-page"  role="button" aria-label="Navigation to Home">
+                <div class="progMenuLi" style="width:100%"></div> <i class="fas fa-home"></i> <span>דף פתיחה</span>
+               </li>
+                            
+        <li class=" oneHalfRem hoverBgSecondary   transition-half GoToChapter " data-tos="i1" role="button" aria-label="Navigation to chapter: מתחילים..." >
+        <div class="progMenuLi"></div> <i class="fas fa-equals"></i> <span>מתחילים...</span>
+        </li>
+         
+            </ul>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="menu-backgroundBlack" class="transition"></div>
+
+    </div>
+    <!--  ----------------     MENU     ---------------     -->
+
+     
+    
+
+    <!--  ----------------    first-page      ---------------     -->
+    <div id="first-page" class="chaptersData">
+    <header class="wow slideInDown fullHeader transition-fullHeader LinkUrlChange" style="background-image: url(uploads/1641557390885.jpg);">
+
+
+          
+      
+
+
+            <div class="row frontHeader show-me-after-load hide-after-load">
+                <div class="col-lg-9 col-centered">
+                    <h1 class="bigFont    wow fadeInDown" data-wow-delay="0.4s">המדריך המלא לטלסקופ</h1>
+                    <p class="color-white  wow fadeIn" data-wow-delay="0.8s">עולם האסטרונומיה</p>
+                    <div class="headerDiveder   wow fadeIn" data-wow-delay="1.2s"></div>
+                    </br>
+                    <p class="col-lg-9 color-white pM-0 float-none  wow fadeIn" data-wow-delay="0.9s">
+                    לומדת דף אחד לדוגמה
+                    </p>
+
+
+               <div class="ctaContainer wow fadeInUp" data-wow-delay="1.6s">
+                   
+                        <button class="cta border-radius-BB bg-color-primary   glossyHover   GoToChapter" href="#"
+                        data-tos="i1">
+
+                        <span>בואו נצא לדרך</span>
+                        
+                        <i class="ctaIcon fas fa-angle-down animated zoomIn animation-duration-2"></i>
+
+                        </button>
+                    
+                </div>
+
+
+                    <br>
+
+                </div>
+            </div>
+            <div class="darkOpacity"></div>
+
+            <img class="logoClient LinkUrlChange show-me-after-load hide-after-load" src="uploads/1641560257462.png" alt="logo">
+
+
+<div id="slice-client-loader" class="slice-client-loader">
+<div class="slice-client-loader-logo-wrapper">
+<div class="logo-img slice-client-loader-front"
+style="background-image: url('uploads/1641560257462.png')" ></div></div>
+<div class="logo-img slice-client-loader-back" style="background-image: url('uploads/1641560257462.png')">
+
+</div></div>
+
+
+        </header>
+
+    </div>
+    <!--  ----------------            first-page           ---------------     -->
+
+  <div id="i1" class="chaptersData">
+      
+      
+      <div class="chapter-header bg-light-color ">
+      <div class="col-lg-9 col-centered">
+      
+      <h2 class="chapter-title bold "> מתחילים... </h2>
+          <div class="chapter-divider bg-color-primary "></div>
+      </div>
+  </div>
+
+  <div class="">
+  <div id="61d837364766d0002aee0827" class="menuBarOnOver class_61d837364766d0002aee0827 " > <section _ngcontent-c34="" class="template-container     wow fadeIn" style="visibility: visible;"><div _ngcontent-c34="" class="col-centered col-lg-9"><video _ngcontent-c34="" class="video100 border-radius-BB box-shadow    LinkUrlChange" controlslist="nodownload" id="61d837364766d0002aee0827_vid1" controls=""><source _ngcontent-c34="" class="LinkUrlChange" type="video/mp4" src="uploads/1641557365764.mp4"> אנו מצטערים, הדפדפן שלך אינו תומך ב-HTML 5 </video><div _ngcontent-c34="" class=" display-none  Not-ok CancelDisplayNone uploadBtnFloat"><button _ngcontent-c34="" nz-button="" nz-tooltip="" nzshape="circle" nzsize="large" nztype="dashed" class="ant-btn ant-btn-dashed ant-btn-circle ant-btn-lg ant-btn-icon-only"><!----><i _ngcontent-c34="" class="anticon anticon-video-camera ng-star-inserted" style="display: inline-block;"></i><span style="display: none;"><!----></span></button><nz-tooltip _nghost-c24="" class="ng-tns-c24-62 ng-star-inserted"><!----></nz-tooltip><br _ngcontent-c34=""><button _ngcontent-c34="" class="widthhight ant-btn ant-btn-dashed ant-btn-circle ant-btn-lg ant-btn-icon-only" nz-button="" nz-tooltip="" nzshape="circle" nzsize="large" nztype="dashed" img-change="61d837364766d0002aee0827_vid1"><!----><i _ngcontent-c34="" _ngcontent-c9="" class="anticon anticon-desktop font15 ng-star-inserted" nz-icon="" style="display: inline-block;"></i><span style="display: none;"></span></button><nz-tooltip _nghost-c24="" class="ng-tns-c24-63 ng-star-inserted"><!----></nz-tooltip><button _ngcontent-c34="" class="widthhight ant-btn ant-tooltip-open ant-btn-dashed ant-btn-circle ant-btn-lg ant-btn-clicked ant-btn-icon-only" nz-button="" nz-tooltip="" nzshape="circle" nzsize="large" nztype="dashed" img-change="61d837364766d0002aee0827_vid1"><!----><i _ngcontent-c34="" _ngcontent-c9="" class="anticon anticon-play-circle font15 ng-star-inserted" nz-icon="" style="display: inline-block;"></i><span style="display: none;"></span></button><nz-tooltip _nghost-c24="" class="ng-tns-c24-64 ng-star-inserted"><!----></nz-tooltip><button _ngcontent-c34="" class="widthhight ant-btn ant-btn-dashed ant-btn-circle ant-btn-lg ant-btn-icon-only" nz-button="" nz-tooltip="" nzshape="circle" nzsize="large" nztype="dashed" img-change="61d837364766d0002aee0827_vid1"><!----><i _ngcontent-c34="" _ngcontent-c9="" class="anticon anticon-sound font15 ng-star-inserted" nz-icon="" style="display: inline-block;"></i><span style="display: none;"></span></button><nz-tooltip _nghost-c24="" class="ng-tns-c24-65 ng-star-inserted"><!----></nz-tooltip><button _ngcontent-c34="" class="widthhight ant-btn ant-btn-dashed ant-btn-circle ant-btn-lg ant-btn-icon-only bg-color-primary color-white" nz-button="" nz-tooltip="" nzshape="circle" nzsize="large" nztype="dashed" img-change="61d837364766d0002aee0827_vid1"><!----><i _ngcontent-c34="" _ngcontent-c9="" class="anticon anticon-calculator font15 ng-star-inserted" nz-icon="" style="display: inline-block;"></i><span style="display: none;"></span></button><nz-tooltip _nghost-c24="" class="ng-tns-c24-66 ng-star-inserted"><!----></nz-tooltip></div></div></section></div><div id="61d8376c4766d0002aee0828" class="menuBarOnOver class_61d8376c4766d0002aee0828 " > <div _ngcontent-c5="" id="61d8376c4766d0002aee0828" class="class_61d8376c4766d0002aee0828"><section _ngcontent-c5="" class="template-container     wow fadeIn" style="visibility: visible;"><div _ngcontent-c5="" class="col-lg-9 col-centered"><div _ngcontent-c5="" class="tempalte-h4 bold fr-box fr-rtl fr-inline" ><div class="fr-wrapper" dir="rtl"><div class="fr-element fr-view" dir="rtl" contenteditable="true" aria-disabled="false" spellcheck="true"><p>חלק 1 - הרכבת הטלסקופ</p></div></div></div></div></section></div></div><div id="61dc9b354766d0002aee0a49" class="menuBarOnOver class_61dc9b354766d0002aee0a49 " > <section _ngcontent-c5="" class="template-container     wow fadeIn" style="visibility: visible;"><div _ngcontent-c5="" class="col-centered col-lg-9"><video _ngcontent-c5="" class="video100 border-radius-BB box-shadow    LinkUrlChange" controlslist="nodownload" id="61dc9b354766d0002aee0a49_vid1" src="uploads/1641557811913.mp4" controls=""><source _ngcontent-c5="" class="LinkUrlChange" type="video/mp4" src="uploads/1641557811913.mp4"> אנו מצטערים, הדפדפן שלך אינו תומך ב-HTML 5 </video><div _ngcontent-c5="" class=" display-none  Not-ok CancelDisplayNone uploadBtnFloat"><button _ngcontent-c5="" nz-button="" nz-tooltip="" nzshape="circle" nzsize="large" nztype="dashed" class="ant-btn ant-btn-dashed ant-btn-circle ant-btn-lg ant-btn-icon-only"><!----><i _ngcontent-c5="" class="anticon anticon-video-camera ng-star-inserted" style="display: inline-block;"></i><span style="display: none;"><!----></span></button><nz-tooltip _nghost-c31="" class="ng-tns-c31-529 ng-star-inserted"><!----></nz-tooltip><br _ngcontent-c5=""><button _ngcontent-c5="" class="widthhight ant-btn ant-btn-dashed ant-btn-circle ant-btn-lg ant-btn-clicked ant-btn-icon-only" nz-button="" nz-tooltip="" nzshape="circle" nzsize="large" nztype="dashed" img-change="61dc9b354766d0002aee0a49_vid1"><!----><i _ngcontent-c5="" _ngcontent-c9="" class="anticon anticon-desktop font15 ng-star-inserted" nz-icon="" style="display: inline-block;"></i><span style="display: none;"></span></button><nz-tooltip _nghost-c31="" class="ng-tns-c31-530 ng-star-inserted"><!----></nz-tooltip><button _ngcontent-c5="" class="widthhight ant-btn ant-btn-dashed ant-btn-circle ant-btn-lg ant-btn-icon-only" nz-button="" nz-tooltip="" nzshape="circle" nzsize="large" nztype="dashed" img-change="61dc9b354766d0002aee0a49_vid1"><!----><i _ngcontent-c5="" _ngcontent-c9="" class="anticon anticon-play-circle font15 ng-star-inserted" nz-icon="" style="display: inline-block;"></i><span style="display: none;"></span></button><nz-tooltip _nghost-c31="" class="ng-tns-c31-531 ng-star-inserted"><!----></nz-tooltip><button _ngcontent-c5="" class="widthhight ant-btn ant-btn-dashed ant-btn-circle ant-btn-lg ant-btn-icon-only" nz-button="" nz-tooltip="" nzshape="circle" nzsize="large" nztype="dashed" img-change="61dc9b354766d0002aee0a49_vid1"><!----><i _ngcontent-c5="" _ngcontent-c9="" class="anticon anticon-sound font15 ng-star-inserted" nz-icon="" style="display: inline-block;"></i><span style="display: none;"></span></button><nz-tooltip _nghost-c31="" class="ng-tns-c31-532 ng-star-inserted"><!----></nz-tooltip><button _ngcontent-c5="" class="widthhight ant-btn bg-color-primary color-white ant-btn-dashed ant-btn-circle ant-btn-lg ant-btn-icon-only" nz-button="" nz-tooltip="" nzshape="circle" nzsize="large" nztype="dashed" img-change="61dc9b354766d0002aee0a49_vid1"><!----><i _ngcontent-c5="" _ngcontent-c9="" class="anticon anticon-calculator font15 ng-star-inserted" nz-icon="" style="display: inline-block;"></i><span style="display: none;"></span></button><nz-tooltip _nghost-c31="" class="ng-tns-c31-533 ng-star-inserted"><!----></nz-tooltip></div></div></section></div><div id="61dc9d3b4766d0002aee0a51" class="menuBarOnOver class_61dc9d3b4766d0002aee0a51 " > <div _ngcontent-c6="" id="61dc9d3b4766d0002aee0a51" class="class_61dc9d3b4766d0002aee0a51"><section _ngcontent-c6="" class="template-container     wow fadeIn" style="visibility: visible; animation-name: fadeIn;"><div _ngcontent-c6="" class="col-lg-9 col-centered"><div _ngcontent-c6="" class="tempalte-h4 bold fr-box fr-rtl fr-inline" ><div class="fr-wrapper" dir="rtl"><div class="fr-element fr-view" dir="rtl" contenteditable="true" aria-disabled="false" spellcheck="true"><p>איך עובד הטלסקופ</p></div></div></div></div></section></div></div><div id="61dc9d264766d0002aee0a50" class="menuBarOnOver class_61dc9d264766d0002aee0a50 " > <div _ngcontent-c6="" id="61dc9d264766d0002aee0a50" class="class_61dc9d264766d0002aee0a50"><section _ngcontent-c6="" class="template-container     wow fadeIn" style="visibility: visible;"><div _ngcontent-c6="" class="col-centered col-lg-9"><video _ngcontent-c6="" class="video100 border-radius-BB box-shadow    LinkUrlChange" controlslist="nodownload" id="61dc9d264766d0002aee0a50_vid1" controls="" src="uploads/1641558289139.mp4"><source _ngcontent-c6="" class="LinkUrlChange" type="video/mp4" src="uploads/1641558289139.mp4"> אנו מצטערים, הדפדפן שלך אינו תומך ב-HTML 5 </video><div _ngcontent-c6="" class=" display-none  Not-ok CancelDisplayNone uploadBtnFloat"><button _ngcontent-c6="" nz-button="" nz-tooltip="" nzshape="circle" nzsize="large" nztype="dashed" class="ant-btn ant-btn-dashed ant-btn-circle ant-btn-lg ant-btn-icon-only"><!----><i _ngcontent-c6="" class="anticon anticon-video-camera ng-star-inserted" style="display: inline-block;"></i><span style="display: none;"><!----></span></button><nz-tooltip _nghost-c32="" class="ng-tns-c32-111 ng-star-inserted"><!----></nz-tooltip><br _ngcontent-c6=""><button _ngcontent-c6="" class="widthhight ant-btn ant-btn-dashed ant-btn-circle ant-btn-lg ant-btn-icon-only" nz-button="" nz-tooltip="" nzshape="circle" nzsize="large" nztype="dashed" img-change="61dc9d264766d0002aee0a50_vid1"><!----><i _ngcontent-c6="" _ngcontent-c9="" class="anticon anticon-desktop font15 ng-star-inserted" nz-icon="" style="display: inline-block;"></i><span style="display: none;"></span></button><nz-tooltip _nghost-c32="" class="ng-tns-c32-112 ng-star-inserted"><!----></nz-tooltip><button _ngcontent-c6="" class="widthhight ant-btn ant-btn-dashed ant-btn-circle ant-btn-lg ant-btn-icon-only" nz-button="" nz-tooltip="" nzshape="circle" nzsize="large" nztype="dashed" img-change="61dc9d264766d0002aee0a50_vid1"><!----><i _ngcontent-c6="" _ngcontent-c9="" class="anticon anticon-play-circle font15 ng-star-inserted" nz-icon="" style="display: inline-block;"></i><span style="display: none;"></span></button><nz-tooltip _nghost-c32="" class="ng-tns-c32-113 ng-star-inserted"><!----></nz-tooltip><button _ngcontent-c6="" class="widthhight ant-btn ant-btn-dashed ant-btn-circle ant-btn-lg ant-btn-icon-only" nz-button="" nz-tooltip="" nzshape="circle" nzsize="large" nztype="dashed" img-change="61dc9d264766d0002aee0a50_vid1"><!----><i _ngcontent-c6="" _ngcontent-c9="" class="anticon anticon-sound font15 ng-star-inserted" nz-icon="" style="display: inline-block;"></i><span style="display: none;"></span></button><nz-tooltip _nghost-c32="" class="ng-tns-c32-114 ng-star-inserted"><!----></nz-tooltip><button _ngcontent-c6="" class="widthhight ant-btn ant-btn-dashed ant-btn-circle ant-btn-lg ant-btn-icon-only bg-color-primary color-white" nz-button="" nz-tooltip="" nzshape="circle" nzsize="large" nztype="dashed" img-change="61dc9d264766d0002aee0a50_vid1"><!----><i _ngcontent-c6="" _ngcontent-c9="" class="anticon anticon-calculator font15 ng-star-inserted" nz-icon="" style="display: inline-block;"></i><span style="display: none;"></span></button><nz-tooltip _nghost-c32="" class="ng-tns-c32-115 ng-star-inserted"><!----></nz-tooltip></div></div></section></div></div><div id="61dc9d624766d0002aee0a52" class="menuBarOnOver class_61dc9d624766d0002aee0a52 " > <section _ngcontent-c6="" class="template-container     wow fadeIn" style="visibility: visible;"><div _ngcontent-c6="" class="col-lg-9 col-centered"><!----><div _ngcontent-c6="" class="newQ border-radius-BB ng-star-inserted" data-target="61dc9d624766d0002aee0a52"><div _ngcontent-c6="" class="qTitle border-radius-BB"><div _ngcontent-c6="" class="qtit inlineblock dirction-rtl fr-box fr-rtl fr-inline" contenteditable="true" ><div class="fr-wrapper" dir="rtl"><div class="fr-element fr-view" dir="rtl" contenteditable="true" aria-disabled="false" spellcheck="true"><p>מה מאפיין את הטלסקופ הזה?</p></div></div></div><img _ngcontent-c6="" class="iconcc replaceAssets" src="../../assets/img/sheal.png"></div><div _ngcontent-c6="" class="boreder"></div><div _ngcontent-c6="" class="qAnsware"><div _ngcontent-c6="" class="inp"><!----><div _ngcontent-c6="" class="flex-between ng-star-inserted" style="position: relative;"><button _ngcontent-c6="" class="ansans2 Multi display-none CancelDisplayNone" data-target="61dc9d624766d0002aee0a52" data-inde="0"></button><input _ngcontent-c6="" class=" radio-custom radio-custom2 radioLable noSwipe" disabled="" type="checkbox" id="radio-0-61dc9d624766d0002aee0a52" name="61dc9d624766d0002aee0a52"><label _ngcontent-c6="" class="noshow radio-custom-label labelAns" contenteditable="true" for="radio-0-61dc9d624766d0002aee0a52" data-target="61dc9d624766d0002aee0a52" data-inde="0">הוא מורכב מעדשות</label><button _ngcontent-c6="" class="display-none CancelDisplayNone deletANS delete-fix-btn ant-btn ant-btn-dashed ant-btn-lg ant-btn-icon-only" nz-button="" nz-popconfirm="" nzplacement="bottom" nzsize="large" nztype="dashed"><!----><i _ngcontent-c6="" class="anticon anticon-delete ng-star-inserted" style="display: inline-block;"></i><span style="display: none;"></span></button><nz-popconfirm _nghost-c33="" class="ng-tns-c33-147 ng-star-inserted"><!----></nz-popconfirm></div><div _ngcontent-c6="" class="flex-between ng-star-inserted" style="position: relative;"><button _ngcontent-c6="" class="ansans2 Multi display-none CancelDisplayNone rightAnsrChek" data-target="61dc9d624766d0002aee0a52" data-inde="1"></button><input _ngcontent-c6="" class=" radio-custom radio-custom2 radioLable noSwipe" disabled="" type="checkbox" id="radio-1-61dc9d624766d0002aee0a52" name="61dc9d624766d0002aee0a52"><label _ngcontent-c6="" class="noshow radio-custom-label labelAns" contenteditable="true" for="radio-1-61dc9d624766d0002aee0a52" data-target="61dc9d624766d0002aee0a52" data-inde="1">יש לו מראה ראשית ומראה משנית</label><button _ngcontent-c6="" class="display-none CancelDisplayNone deletANS delete-fix-btn ant-btn ant-btn-dashed ant-btn-lg ant-btn-icon-only" nz-button="" nz-popconfirm="" nzplacement="bottom" nzsize="large" nztype="dashed"><!----><i _ngcontent-c6="" class="anticon anticon-delete ng-star-inserted" style="display: inline-block;"></i><span style="display: none;"></span></button><nz-popconfirm _nghost-c33="" class="ng-tns-c33-148 ng-star-inserted"><!----></nz-popconfirm></div><div _ngcontent-c6="" class="flex-between ng-star-inserted" style="position: relative;"><button _ngcontent-c6="" class="ansans2 Multi display-none CancelDisplayNone rightAnsrChek" data-target="61dc9d624766d0002aee0a52" data-inde="2"></button><input _ngcontent-c6="" class=" radio-custom radio-custom2 radioLable noSwipe" disabled="" type="checkbox" id="radio-2-61dc9d624766d0002aee0a52" name="61dc9d624766d0002aee0a52"><label _ngcontent-c6="" class="noshow radio-custom-label labelAns" contenteditable="true" for="radio-2-61dc9d624766d0002aee0a52" data-target="61dc9d624766d0002aee0a52" data-inde="2">הוא נקרא על שם אייזיק ניוטון</label><button _ngcontent-c6="" class="display-none CancelDisplayNone deletANS delete-fix-btn ant-btn ant-btn-dashed ant-btn-lg ant-btn-icon-only" nz-button="" nz-popconfirm="" nzplacement="bottom" nzsize="large" nztype="dashed"><!----><i _ngcontent-c6="" class="anticon anticon-delete ng-star-inserted" style="display: inline-block;"></i><span style="display: none;"></span></button><nz-popconfirm _nghost-c33="" class="ng-tns-c33-149 ng-star-inserted"><!----></nz-popconfirm></div><div _ngcontent-c6="" class="flex-between ng-star-inserted" style="position: relative;"><button _ngcontent-c6="" class="ansans2 Multi display-none CancelDisplayNone" data-target="61dc9d624766d0002aee0a52" data-inde="3"></button><input _ngcontent-c6="" class=" radio-custom radio-custom2 radioLable noSwipe" disabled="" type="checkbox" id="radio-3-61dc9d624766d0002aee0a52" name="61dc9d624766d0002aee0a52"><label _ngcontent-c6="" class="noshow radio-custom-label labelAns" contenteditable="true" for="radio-3-61dc9d624766d0002aee0a52" data-target="61dc9d624766d0002aee0a52" data-inde="3">החצובה שלו היא חצובה גרמנית משוונית</label><button _ngcontent-c6="" class="display-none CancelDisplayNone deletANS delete-fix-btn ant-btn ant-btn-dashed ant-btn-lg ant-btn-icon-only" nz-button="" nz-popconfirm="" nzplacement="bottom" nzsize="large" nztype="dashed"><!----><i _ngcontent-c6="" class="anticon anticon-delete ng-star-inserted" style="display: inline-block;"></i><span style="display: none;"></span></button><nz-popconfirm _nghost-c33="" class="ng-tns-c33-150 ng-star-inserted"><!----></nz-popconfirm></div></div></div><div _ngcontent-c6="" class="forbtn"><button _ngcontent-c6="" class="display-none margincentercollaps CancelDisplayNone ant-btn ant-btn-dashed ant-btn-lg" nz-button="" nz-tooltip="" nzplacement="bottom" nzsize="large" nztype="dashed"><!----><i _ngcontent-c6="" class="anticon anticon-plus ng-star-inserted" style="display: inline-block;"></i><span style=""> הוסף תשובה </span></button><nz-tooltip _nghost-c32="" class="ng-tns-c32-133 ng-star-inserted"><!----></nz-tooltip><button _ngcontent-c6="" class="btn  cta border-radius-BB bg-color-secondary ansCheck2 noSwipe" data-type="checkBox" disabled="" data-target="61dc9d624766d0002aee0a52" data-answer="1,2"><span _ngcontent-c6="" class="fr-box fr-rtl fr-inline" ><div class="fr-wrapper" dir="rtl"><div class="fr-element fr-view" dir="rtl" contenteditable="true" aria-disabled="false" spellcheck="true"><p>בדוק תשובה</p></div></div></span></button></div><div _ngcontent-c6="" class="feedback border-radius-BB display-none CancelDisplayNone2 " data-target="61dc9d624766d0002aee0a52"><div _ngcontent-c6="" class="goodfeedback display-none  CancelDisplayNone2"><div _ngcontent-c6="" class="iconright"><img _ngcontent-c6="" class="iconVX showPrint replaceAssets" src="../../assets/img/V.png"><p _ngcontent-c6="" class="AnswerTitleGood" contenteditable="true" data-target="61dc9d624766d0002aee0a52">תשובה נכונה</p></div><div _ngcontent-c6="" class="TextFeed"><p _ngcontent-c6="" class="fr-box fr-rtl fr-inline" ><div class="fr-wrapper" dir="rtl"><div class="fr-element fr-view" dir="rtl" contenteditable="true" aria-disabled="false" spellcheck="true"><p>נכון מאוד!</p></div></div></p></div></div><div _ngcontent-c6="" class="bedfeedback display-none CancelDisplayNone2 "><div _ngcontent-c6="" class="iconright"><img _ngcontent-c6="" class="iconVX replaceAssets" src="../../assets/img/X.png"><p _ngcontent-c6="" class="AnswerTitleBed" contenteditable="true" data-target="61dc9d624766d0002aee0a52">תשובה לא נכונה</p></div><div _ngcontent-c6="" class="TextFeed"><p _ngcontent-c6="" class="fr-box fr-rtl fr-inline" ><div class="fr-wrapper" dir="rtl"><div class="fr-element fr-view" dir="rtl" contenteditable="true" aria-disabled="false" spellcheck="true"><p>טעות, צפו שוב בסרטון...<br></p></div></div></p></div></div></div></div></div></section></div><div id="61dc9ddb4766d0002aee0a54" class="menuBarOnOver class_61dc9ddb4766d0002aee0a54 " > <div _ngcontent-c6="" id="61dc9ddb4766d0002aee0a54" class="class_61dc9ddb4766d0002aee0a54"><section _ngcontent-c6="" class="template-container     wow fadeIn" style="visibility: visible;"><div _ngcontent-c6="" class="col-lg-9 col-centered"><div _ngcontent-c6="" class="tempalte-h4 bold fr-box fr-rtl fr-inline" ><div class="fr-wrapper" dir="rtl"><div class="fr-element fr-view" dir="rtl" contenteditable="true" aria-disabled="false" spellcheck="true"><p>הרכבת הכוונת</p></div></div></div></div></section></div></div><div id="61dc9dcf4766d0002aee0a53" class="menuBarOnOver class_61dc9dcf4766d0002aee0a53 " > <div _ngcontent-c6="" id="61dc9dcf4766d0002aee0a53" class="class_61dc9dcf4766d0002aee0a53"><section _ngcontent-c6="" class="template-container     wow fadeIn" style="visibility: visible;"><div _ngcontent-c6="" class="col-centered col-lg-9"><video _ngcontent-c6="" class="video100 border-radius-BB box-shadow    LinkUrlChange" controlslist="nodownload" id="61dc9dcf4766d0002aee0a53_vid1" controls="" src="uploads/1641558467592.mp4"><source _ngcontent-c6="" class="LinkUrlChange" type="video/mp4" src="uploads/1641558467592.mp4"> אנו מצטערים, הדפדפן שלך אינו תומך ב-HTML 5 </video><div _ngcontent-c6="" class=" display-none  Not-ok CancelDisplayNone uploadBtnFloat"><button _ngcontent-c6="" nz-button="" nz-tooltip="" nzshape="circle" nzsize="large" nztype="dashed" class="ant-btn ant-btn-dashed ant-btn-circle ant-btn-lg ant-btn-icon-only"><!----><i _ngcontent-c6="" class="anticon anticon-video-camera ng-star-inserted" style="display: inline-block;"></i><span style="display: none;"><!----></span></button><nz-tooltip _nghost-c32="" class="ng-tns-c32-152 ng-star-inserted"><!----></nz-tooltip><br _ngcontent-c6=""><button _ngcontent-c6="" class="widthhight ant-btn ant-btn-dashed ant-btn-circle ant-btn-lg ant-btn-icon-only" nz-button="" nz-tooltip="" nzshape="circle" nzsize="large" nztype="dashed" img-change="61dc9dcf4766d0002aee0a53_vid1"><!----><i _ngcontent-c6="" _ngcontent-c9="" class="anticon anticon-desktop font15 ng-star-inserted" nz-icon="" style="display: inline-block;"></i><span style="display: none;"></span></button><nz-tooltip _nghost-c32="" class="ng-tns-c32-153 ng-star-inserted"><!----></nz-tooltip><button _ngcontent-c6="" class="widthhight ant-btn ant-btn-dashed ant-btn-circle ant-btn-lg ant-btn-icon-only" nz-button="" nz-tooltip="" nzshape="circle" nzsize="large" nztype="dashed" img-change="61dc9dcf4766d0002aee0a53_vid1"><!----><i _ngcontent-c6="" _ngcontent-c9="" class="anticon anticon-play-circle font15 ng-star-inserted" nz-icon="" style="display: inline-block;"></i><span style="display: none;"></span></button><nz-tooltip _nghost-c32="" class="ng-tns-c32-154 ng-star-inserted"><!----></nz-tooltip><button _ngcontent-c6="" class="widthhight ant-btn ant-btn-dashed ant-btn-circle ant-btn-lg ant-btn-icon-only" nz-button="" nz-tooltip="" nzshape="circle" nzsize="large" nztype="dashed" img-change="61dc9dcf4766d0002aee0a53_vid1"><!----><i _ngcontent-c6="" _ngcontent-c9="" class="anticon anticon-sound font15 ng-star-inserted" nz-icon="" style="display: inline-block;"></i><span style="display: none;"></span></button><nz-tooltip _nghost-c32="" class="ng-tns-c32-155 ng-star-inserted"><!----></nz-tooltip><button _ngcontent-c6="" class="widthhight ant-btn ant-btn-dashed ant-btn-circle ant-btn-lg ant-btn-icon-only bg-color-primary color-white" nz-button="" nz-tooltip="" nzshape="circle" nzsize="large" nztype="dashed" img-change="61dc9dcf4766d0002aee0a53_vid1"><!----><i _ngcontent-c6="" _ngcontent-c9="" class="anticon anticon-calculator font15 ng-star-inserted" nz-icon="" style="display: inline-block;"></i><span style="display: none;"></span></button><nz-tooltip _nghost-c32="" class="ng-tns-c32-156 ng-star-inserted"><!----></nz-tooltip></div></div></section></div></div><div id="61dc9e1e4766d0002aee0a55" class="menuBarOnOver class_61dc9e1e4766d0002aee0a55 " > <div _ngcontent-c6="" class="small modal"><!----><label _ngcontent-c6="" class="ng-star-inserted"><br _ngcontent-c6=""> ללא ניקוד </label><!----><button _ngcontent-c6="" nz-button="" nzshape="circle" nztype="default" style="margin-top:15px;" class="ant-btn ant-btn-default ant-btn-circle ant-btn-icon-only"><!----><i _ngcontent-c6="" class="anticon anticon-setting font-size25px ng-star-inserted" style="display: inline-block;"></i><span style="display: none;"></span></button></div><section _ngcontent-c6="" class="template-container     wow fadeIn" style="visibility: visible;"><div _ngcontent-c6="" class="col-lg-9 col-centered"><!----><div _ngcontent-c6="" class="newQ border-radius-BB ng-star-inserted" data-target="61dc9e1e4766d0002aee0a55"><div _ngcontent-c6="" class="qTitle border-radius-BB"><div _ngcontent-c6="" class="qtit inlineblock fr-box fr-rtl fr-inline" ><div class="fr-wrapper" dir="rtl"><div class="fr-element fr-view" dir="rtl" contenteditable="true" aria-disabled="false" spellcheck="true"><p>למה לא פותחים את המכסה של הטלסקופ עדיין?</p></div></div></div><img _ngcontent-c6="" class="iconcc replaceAssets" src="../../assets/img/sheal.png"></div><div _ngcontent-c6="" class="boreder"></div><div _ngcontent-c6="" class="qAnsware"><div _ngcontent-c6="" class="inp"><!----><div _ngcontent-c6="" class="flex-between ng-star-inserted" style="position: relative;"><button _ngcontent-c6="" class="ansans display-none CancelDisplayNone" data-target="61dc9e1e4766d0002aee0a55"></button><input _ngcontent-c6="" class=" radio-custom radioLable noSwipe" disabled="" type="radio" id="radio-0-61dc9e1e4766d0002aee0a55" name="61dc9e1e4766d0002aee0a55"><label _ngcontent-c6="" class="noshow radio-custom-label labelAns" contenteditable="true" for="radio-0-61dc9e1e4766d0002aee0a55" data-target="61dc9e1e4766d0002aee0a55" data-inde="0">כדי שהמראה הראשית לא תתמלא באדים</label><button _ngcontent-c6="" class="display-none CancelDisplayNone deletANS delete-fix-btn ant-btn ant-btn-dashed ant-btn-lg ant-btn-icon-only" nz-button="" nz-popconfirm="" nzplacement="bottom" nzsize="large" nztype="dashed"><!----><i _ngcontent-c6="" class="anticon anticon-delete ng-star-inserted" style="display: inline-block;"></i><span style="display: none;"></span></button><nz-popconfirm _nghost-c33="" class="ng-tns-c33-197 ng-star-inserted"><!----></nz-popconfirm></div><div _ngcontent-c6="" class="flex-between ng-star-inserted" style="position: relative;"><button _ngcontent-c6="" class="ansans display-none CancelDisplayNone rightAnsrChek" data-target="61dc9e1e4766d0002aee0a55"></button><input _ngcontent-c6="" class=" radio-custom radioLable noSwipe" disabled="" type="radio" id="radio-1-61dc9e1e4766d0002aee0a55" name="61dc9e1e4766d0002aee0a55"><label _ngcontent-c6="" class="noshow radio-custom-label labelAns" contenteditable="true" for="radio-1-61dc9e1e4766d0002aee0a55" data-target="61dc9e1e4766d0002aee0a55" data-inde="1">כדי שלא יפלו דברים על המראה הראשית</label><button _ngcontent-c6="" class="display-none CancelDisplayNone deletANS delete-fix-btn ant-btn ant-btn-dashed ant-btn-lg ant-btn-icon-only" nz-button="" nz-popconfirm="" nzplacement="bottom" nzsize="large" nztype="dashed"><!----><i _ngcontent-c6="" class="anticon anticon-delete ng-star-inserted" style="display: inline-block;"></i><span style="display: none;"></span></button><nz-popconfirm _nghost-c33="" class="ng-tns-c33-198 ng-star-inserted"><!----></nz-popconfirm></div><div _ngcontent-c6="" class="flex-between ng-star-inserted" style="position: relative;"><button _ngcontent-c6="" class="ansans display-none CancelDisplayNone" data-target="61dc9e1e4766d0002aee0a55"></button><input _ngcontent-c6="" class=" radio-custom radioLable noSwipe" disabled="" type="radio" id="radio-2-61dc9e1e4766d0002aee0a55" name="61dc9e1e4766d0002aee0a55"><label _ngcontent-c6="" class="noshow radio-custom-label labelAns" contenteditable="true" for="radio-2-61dc9e1e4766d0002aee0a55" data-target="61dc9e1e4766d0002aee0a55" data-inde="2">כי אלה שכחה לפתוח אותו</label><button _ngcontent-c6="" class="display-none CancelDisplayNone deletANS delete-fix-btn ant-btn ant-btn-dashed ant-btn-lg ant-btn-icon-only" nz-button="" nz-popconfirm="" nzplacement="bottom" nzsize="large" nztype="dashed"><!----><i _ngcontent-c6="" class="anticon anticon-delete ng-star-inserted" style="display: inline-block;"></i><span style="display: none;"></span></button><nz-popconfirm _nghost-c33="" class="ng-tns-c33-199 ng-star-inserted"><!----></nz-popconfirm></div><div _ngcontent-c6="" class="flex-between ng-star-inserted" style="position: relative;"><button _ngcontent-c6="" class="ansans display-none CancelDisplayNone" data-target="61dc9e1e4766d0002aee0a55"></button><input _ngcontent-c6="" class=" radio-custom radioLable noSwipe" disabled="" type="radio" id="radio-3-61dc9e1e4766d0002aee0a55" name="61dc9e1e4766d0002aee0a55"><label _ngcontent-c6="" class="noshow radio-custom-label labelAns" contenteditable="true" for="radio-3-61dc9e1e4766d0002aee0a55" data-target="61dc9e1e4766d0002aee0a55" data-inde="3">כדי שהמראה הראשית לא תתמלא באבק</label><button _ngcontent-c6="" class="display-none CancelDisplayNone deletANS delete-fix-btn ant-btn ant-btn-dashed ant-btn-lg ant-btn-icon-only" nz-button="" nz-popconfirm="" nzplacement="bottom" nzsize="large" nztype="dashed"><!----><i _ngcontent-c6="" class="anticon anticon-delete ng-star-inserted" style="display: inline-block;"></i><span style="display: none;"></span></button><nz-popconfirm _nghost-c33="" class="ng-tns-c33-200 ng-star-inserted"><!----></nz-popconfirm></div></div></div><div _ngcontent-c6="" class="forbtn"><button _ngcontent-c6="" class="display-none margincentercollaps CancelDisplayNone ant-btn ant-btn-dashed ant-btn-lg" nz-button="" nz-tooltip="" nzplacement="bottom" nzsize="large" nztype="dashed"><!----><i _ngcontent-c6="" class="anticon anticon-plus ng-star-inserted" style="display: inline-block;"></i><span style=""> הוסף תשובה </span></button><nz-tooltip _nghost-c32="" class="ng-tns-c32-180 ng-star-inserted"><!----></nz-tooltip><button _ngcontent-c6="" class="btn  cta border-radius-BB bg-color-secondary ansCheck2 noSwipe" disabled="" data-target="61dc9e1e4766d0002aee0a55" data-answer="1"><span _ngcontent-c6="" class="fr-box fr-rtl fr-inline" ><div class="fr-wrapper" dir="rtl"><div class="fr-element fr-view" dir="rtl" contenteditable="true" aria-disabled="false" spellcheck="true"><p>בדוק תשובה</p></div></div></span></button></div><div _ngcontent-c6="" class="feedback border-radius-BB display-none CancelDisplayNone2 " data-target="61dc9e1e4766d0002aee0a55"><div _ngcontent-c6="" class="goodfeedback display-none  CancelDisplayNone2"><div _ngcontent-c6="" class="iconright"><img _ngcontent-c6="" class="iconVX showPrint replaceAssets" src="../../assets/img/V.png"><p _ngcontent-c6="" class="AnswerTitleGood" contenteditable="true" data-target="61dc9e1e4766d0002aee0a55">תשובה נכונה</p></div><div _ngcontent-c6="" class="TextFeed"><p _ngcontent-c6="" class="fr-box fr-rtl fr-inline" ><div class="fr-wrapper" dir="rtl"><div class="fr-element fr-view" dir="rtl" contenteditable="true" aria-disabled="false" spellcheck="true"><p>נכון!</p></div></div></p></div></div><div _ngcontent-c6="" class="bedfeedback display-none CancelDisplayNone2 "><div _ngcontent-c6="" class="iconright"><img _ngcontent-c6="" class="iconVX replaceAssets" src="../../assets/img/X.png"><p _ngcontent-c6="" class="AnswerTitleBed" contenteditable="true" data-target="61dc9e1e4766d0002aee0a55">תשובה לא נכונה</p></div><div _ngcontent-c6="" class="TextFeed"><p _ngcontent-c6="" class="fr-box fr-rtl fr-inline" ><div class="fr-wrapper" dir="rtl"><div class="fr-element fr-view" dir="rtl" contenteditable="true" aria-disabled="false" spellcheck="true"><p>טעות, צפו שוב בסרטון...<br></p></div></div></p></div></div></div></div></div></section></div><div id="61dc9eab4766d0002aee0a57" class="menuBarOnOver class_61dc9eab4766d0002aee0a57 " > <div _ngcontent-c6="" id="61dc9eab4766d0002aee0a57" class="class_61dc9eab4766d0002aee0a57"><section _ngcontent-c6="" class="template-container     wow fadeIn" style="visibility: visible;"><div _ngcontent-c6="" class="col-lg-9 col-centered"><div _ngcontent-c6="" class="tempalte-h4 bold fr-box fr-rtl fr-inline" ><div class="fr-wrapper" dir="rtl"><div class="fr-element fr-view" dir="rtl" contenteditable="true" aria-disabled="false" spellcheck="true"><p>סוגי כוונות</p></div></div></div></div></section></div></div><div id="61dc9e9d4766d0002aee0a56" class="menuBarOnOver class_61dc9e9d4766d0002aee0a56 " > <div _ngcontent-c6="" id="61dc9e9d4766d0002aee0a56" class="class_61dc9e9d4766d0002aee0a56"><section _ngcontent-c6="" class="template-container     wow fadeIn" style="visibility: visible;"><div _ngcontent-c6="" class="col-centered col-lg-9"><video _ngcontent-c6="" class="video100 border-radius-BB box-shadow    LinkUrlChange" controlslist="nodownload" id="61dc9e9d4766d0002aee0a56_vid1" controls="" src="uploads/1641559109435.mp4"><source _ngcontent-c6="" class="LinkUrlChange" type="video/mp4" src="uploads/1641559109435.mp4"> אנו מצטערים, הדפדפן שלך אינו תומך ב-HTML 5 </video><div _ngcontent-c6="" class=" display-none  Not-ok CancelDisplayNone uploadBtnFloat"><button _ngcontent-c6="" nz-button="" nz-tooltip="" nzshape="circle" nzsize="large" nztype="dashed" class="ant-btn ant-btn-dashed ant-btn-circle ant-btn-lg ant-btn-icon-only"><!----><i _ngcontent-c6="" class="anticon anticon-video-camera ng-star-inserted" style="display: inline-block;"></i><span style="display: none;"><!----></span></button><nz-tooltip _nghost-c32="" class="ng-tns-c32-202 ng-star-inserted"><!----></nz-tooltip><br _ngcontent-c6=""><button _ngcontent-c6="" class="widthhight ant-btn ant-btn-dashed ant-btn-circle ant-btn-lg ant-btn-icon-only" nz-button="" nz-tooltip="" nzshape="circle" nzsize="large" nztype="dashed" img-change="61dc9e9d4766d0002aee0a56_vid1"><!----><i _ngcontent-c6="" _ngcontent-c9="" class="anticon anticon-desktop font15 ng-star-inserted" nz-icon="" style="display: inline-block;"></i><span style="display: none;"></span></button><nz-tooltip _nghost-c32="" class="ng-tns-c32-203 ng-star-inserted"><!----></nz-tooltip><button _ngcontent-c6="" class="widthhight ant-btn ant-btn-dashed ant-btn-circle ant-btn-lg ant-btn-icon-only" nz-button="" nz-tooltip="" nzshape="circle" nzsize="large" nztype="dashed" img-change="61dc9e9d4766d0002aee0a56_vid1"><!----><i _ngcontent-c6="" _ngcontent-c9="" class="anticon anticon-play-circle font15 ng-star-inserted" nz-icon="" style="display: inline-block;"></i><span style="display: none;"></span></button><nz-tooltip _nghost-c32="" class="ng-tns-c32-204 ng-star-inserted"><!----></nz-tooltip><button _ngcontent-c6="" class="widthhight ant-btn ant-btn-dashed ant-btn-circle ant-btn-lg ant-btn-icon-only" nz-button="" nz-tooltip="" nzshape="circle" nzsize="large" nztype="dashed" img-change="61dc9e9d4766d0002aee0a56_vid1"><!----><i _ngcontent-c6="" _ngcontent-c9="" class="anticon anticon-sound font15 ng-star-inserted" nz-icon="" style="display: inline-block;"></i><span style="display: none;"></span></button><nz-tooltip _nghost-c32="" class="ng-tns-c32-205 ng-star-inserted"><!----></nz-tooltip><button _ngcontent-c6="" class="widthhight ant-btn ant-btn-dashed ant-btn-circle ant-btn-lg ant-btn-icon-only bg-color-primary color-white" nz-button="" nz-tooltip="" nzshape="circle" nzsize="large" nztype="dashed" img-change="61dc9e9d4766d0002aee0a56_vid1"><!----><i _ngcontent-c6="" _ngcontent-c9="" class="anticon anticon-calculator font15 ng-star-inserted" nz-icon="" style="display: inline-block;"></i><span style="display: none;"></span></button><nz-tooltip _nghost-c32="" class="ng-tns-c32-206 ng-star-inserted"><!----></nz-tooltip></div></div></section></div></div><div id="61dc9ed24766d0002aee0a58" class="menuBarOnOver class_61dc9ed24766d0002aee0a58 " > <section _ngcontent-c6="" class="template-container     wow fadeIn" style="visibility: visible;"><div _ngcontent-c6="" class="col-lg-9 col-centered"><!----><div _ngcontent-c6="" class="newQ border-radius-BB ng-star-inserted" data-target="61dc9ed24766d0002aee0a58"><div _ngcontent-c6="" class="qTitle border-radius-BB"><div _ngcontent-c6="" class="qtit inlineblock dirction-rtl fr-box fr-rtl fr-inline" ><div class="fr-wrapper" dir="rtl"><div class="fr-element fr-view" dir="rtl" contenteditable="true" aria-disabled="false" spellcheck="true"><p>בסוג כוונת אלה מעדיפה להשתמש?</p></div></div></div><img _ngcontent-c6="" class="iconcc replaceAssets" src="../../assets/img/sheal.png"></div><div _ngcontent-c6="" class="boreder"></div><div _ngcontent-c6="" class="qAnsware"><div _ngcontent-c6="" class=""><!----><div _ngcontent-c6="" class="yesNoDiv ng-star-inserted" data-target="61dc9ed24766d0002aee0a58" data-inde="0"><button _ngcontent-c6="" class="center ansans display-none CancelDisplayNone yesNoButton" data-target="61dc9ed24766d0002aee0a58"></button><p _ngcontent-c6="" class="noshow yesNoq radio-custom-label labelAns" contenteditable="true" data-target="61dc9ed24766d0002aee0a58">כוונת אופטית, כי קל יותר לעשות איתה דילוג כוכבים</p></div><div _ngcontent-c6="" class="yesNoDiv ng-star-inserted" data-target="61dc9ed24766d0002aee0a58" data-inde="1"><button _ngcontent-c6="" class="center ansans display-none CancelDisplayNone yesNoButton rightAnsrChek" data-target="61dc9ed24766d0002aee0a58"></button><p _ngcontent-c6="" class="noshow yesNoq radio-custom-label labelAns" contenteditable="true" data-target="61dc9ed24766d0002aee0a58">כוונת נקודה אדומה, כי אם היא מכוונת מדויק קל מאוד לכוון איתה</p></div></div></div><div _ngcontent-c6="" class="forbtn"><button _ngcontent-c6="" class="btn  cta border-radius-BB bg-color-secondary ansCheck2 yesNoansCheck noSwipe disableClass" data-target="61dc9ed24766d0002aee0a58" data-answer="1"><span _ngcontent-c6="" class="fr-box fr-rtl fr-inline" ><div class="fr-wrapper" dir="rtl"><div class="fr-element fr-view" dir="rtl" contenteditable="true" aria-disabled="false" spellcheck="true"><p>בדוק תשובה</p></div></div></span></button></div><div _ngcontent-c6="" class="feedback border-radius-BB display-none CancelDisplayNone2 " data-target="61dc9ed24766d0002aee0a58"><div _ngcontent-c6="" class="goodfeedback display-none  CancelDisplayNone2"><div _ngcontent-c6="" class="iconright"><img _ngcontent-c6="" class="iconVX showPrint replaceAssets" src="../../assets/img/V.png"><p _ngcontent-c6="" class="AnswerTitleGood" contenteditable="true" data-target="61dc9ed24766d0002aee0a58">תשובה נכונה</p></div><div _ngcontent-c6="" class="TextFeed"><p _ngcontent-c6="" class="fr-box fr-rtl fr-inline" ><div class="fr-wrapper" dir="rtl"><div class="fr-element fr-view" dir="rtl" contenteditable="true" aria-disabled="false" spellcheck="true"><p>נכון, הקשבתם יופי!</p></div></div></p></div></div><div _ngcontent-c6="" class="bedfeedback display-none CancelDisplayNone2 "><div _ngcontent-c6="" class="iconright"><img _ngcontent-c6="" class="iconVX replaceAssets" src="../../assets/img/X.png"><p _ngcontent-c6="" class="AnswerTitleBed" contenteditable="true" data-target="61dc9ed24766d0002aee0a58">תשובה לא נכונה</p></div><div _ngcontent-c6="" class="TextFeed"><p _ngcontent-c6="" class="fr-box fr-rtl fr-inline" ><div class="fr-wrapper" dir="rtl"><div class="fr-element fr-view" dir="rtl" contenteditable="true" aria-disabled="false" spellcheck="true"><p>טעות, צפו שוב בסרטון...<br></p></div></div></p></div></div></div></div></div></section></div><div id="61dc9f224766d0002aee0a5a" class="menuBarOnOver class_61dc9f224766d0002aee0a5a " > <div _ngcontent-c6="" id="61dc9f224766d0002aee0a5a" class="class_61dc9f224766d0002aee0a5a"><section _ngcontent-c6="" class="template-container     wow fadeIn" style="visibility: visible;"><div _ngcontent-c6="" class="col-lg-9 col-centered"><div _ngcontent-c6="" class="tempalte-h4 bold fr-box fr-rtl fr-inline" ><div class="fr-wrapper" dir="rtl"><div class="fr-element fr-view" dir="rtl" contenteditable="true" aria-disabled="false" spellcheck="true"><p>הרכבת העינית</p></div></div></div></div></section></div></div><div id="61dc9f174766d0002aee0a59" class="menuBarOnOver class_61dc9f174766d0002aee0a59 " > <div _ngcontent-c6="" id="61dc9f174766d0002aee0a59" class="class_61dc9f174766d0002aee0a59"><section _ngcontent-c6="" class="template-container     wow fadeIn" style="visibility: visible;"><div _ngcontent-c6="" class="col-centered col-lg-9"><video _ngcontent-c6="" class="video100 border-radius-BB box-shadow    LinkUrlChange" controlslist="nodownload" id="61dc9f174766d0002aee0a59_vid1" controls="" src="uploads/1641559521124.mp4"><source _ngcontent-c6="" class="LinkUrlChange" type="video/mp4" src="uploads/1641559521124.mp4"> אנו מצטערים, הדפדפן שלך אינו תומך ב-HTML 5 </video><div _ngcontent-c6="" class=" display-none  Not-ok CancelDisplayNone uploadBtnFloat"><button _ngcontent-c6="" nz-button="" nz-tooltip="" nzshape="circle" nzsize="large" nztype="dashed" class="ant-btn ant-btn-dashed ant-btn-circle ant-btn-lg ant-btn-icon-only"><!----><i _ngcontent-c6="" class="anticon anticon-video-camera ng-star-inserted" style="display: inline-block;"></i><span style="display: none;"><!----></span></button><nz-tooltip _nghost-c32="" class="ng-tns-c32-252 ng-star-inserted"><!----></nz-tooltip><br _ngcontent-c6=""><button _ngcontent-c6="" class="widthhight ant-btn ant-btn-dashed ant-btn-circle ant-btn-lg ant-btn-icon-only" nz-button="" nz-tooltip="" nzshape="circle" nzsize="large" nztype="dashed" img-change="61dc9f174766d0002aee0a59_vid1"><!----><i _ngcontent-c6="" _ngcontent-c9="" class="anticon anticon-desktop font15 ng-star-inserted" nz-icon="" style="display: inline-block;"></i><span style="display: none;"></span></button><nz-tooltip _nghost-c32="" class="ng-tns-c32-253 ng-star-inserted"><!----></nz-tooltip><button _ngcontent-c6="" class="widthhight ant-btn ant-btn-dashed ant-btn-circle ant-btn-lg ant-btn-icon-only" nz-button="" nz-tooltip="" nzshape="circle" nzsize="large" nztype="dashed" img-change="61dc9f174766d0002aee0a59_vid1"><!----><i _ngcontent-c6="" _ngcontent-c9="" class="anticon anticon-play-circle font15 ng-star-inserted" nz-icon="" style="display: inline-block;"></i><span style="display: none;"></span></button><nz-tooltip _nghost-c32="" class="ng-tns-c32-254 ng-star-inserted"><!----></nz-tooltip><button _ngcontent-c6="" class="widthhight ant-btn ant-btn-dashed ant-btn-circle ant-btn-lg ant-btn-icon-only" nz-button="" nz-tooltip="" nzshape="circle" nzsize="large" nztype="dashed" img-change="61dc9f174766d0002aee0a59_vid1"><!----><i _ngcontent-c6="" _ngcontent-c9="" class="anticon anticon-sound font15 ng-star-inserted" nz-icon="" style="display: inline-block;"></i><span style="display: none;"></span></button><nz-tooltip _nghost-c32="" class="ng-tns-c32-255 ng-star-inserted"><!----></nz-tooltip><button _ngcontent-c6="" class="widthhight ant-btn ant-btn-dashed ant-btn-circle ant-btn-lg ant-btn-icon-only bg-color-primary color-white" nz-button="" nz-tooltip="" nzshape="circle" nzsize="large" nztype="dashed" img-change="61dc9f174766d0002aee0a59_vid1"><!----><i _ngcontent-c6="" _ngcontent-c9="" class="anticon anticon-calculator font15 ng-star-inserted" nz-icon="" style="display: inline-block;"></i><span style="display: none;"></span></button><nz-tooltip _nghost-c32="" class="ng-tns-c32-256 ng-star-inserted"><!----></nz-tooltip></div></div></section></div></div><div id="61dc9f624766d0002aee0a5b" class="menuBarOnOver class_61dc9f624766d0002aee0a5b " > <div _ngcontent-c6="" class="small modal"><!----><label _ngcontent-c6="" class="ng-star-inserted"><br _ngcontent-c6=""> ללא ניקוד </label><!----><button _ngcontent-c6="" nz-button="" nzshape="circle" nztype="default" style="margin-top:15px;" class="ant-btn ant-btn-default ant-btn-circle ant-btn-icon-only"><!----><i _ngcontent-c6="" class="anticon anticon-setting font-size25px ng-star-inserted" style="display: inline-block;"></i><span style="display: none;"></span></button></div><section _ngcontent-c6="" class="template-container     wow fadeIn" style="visibility: visible;"><div _ngcontent-c6="" class="col-lg-9 col-centered"><!----><div _ngcontent-c6="" class="newQ border-radius-BB ng-star-inserted" data-target="61dc9f624766d0002aee0a5b"><div _ngcontent-c6="" class="qTitle border-radius-BB"><div _ngcontent-c6="" class="qtit inlineblock fr-box fr-rtl fr-inline" ><div class="fr-wrapper" dir="rtl"><div class="fr-element fr-view" dir="rtl" contenteditable="true" aria-disabled="false" spellcheck="true"><p>איזו עינית נרכיב קודם?</p></div></div></div><img _ngcontent-c6="" class="iconcc replaceAssets" src="../../assets/img/sheal.png"></div><div _ngcontent-c6="" class="boreder"></div><div _ngcontent-c6="" class="qAnsware"><div _ngcontent-c6="" class="inp"><!----><div _ngcontent-c6="" class="flex-between ng-star-inserted" style="position: relative;"><button _ngcontent-c6="" class="ansans display-none CancelDisplayNone" data-target="61dc9f624766d0002aee0a5b"></button><input _ngcontent-c6="" class=" radio-custom radioLable noSwipe" disabled="" type="radio" id="radio-0-61dc9f624766d0002aee0a5b" name="61dc9f624766d0002aee0a5b"><label _ngcontent-c6="" class="noshow radio-custom-label labelAns" contenteditable="true" for="radio-0-61dc9f624766d0002aee0a5b" data-target="61dc9f624766d0002aee0a5b" data-inde="0">עינית עם אורך מוקד נמוך, כדי שההגדלה תהיה גדולה</label><button _ngcontent-c6="" class="display-none CancelDisplayNone deletANS delete-fix-btn ant-btn ant-btn-dashed ant-btn-lg ant-btn-icon-only" nz-button="" nz-popconfirm="" nzplacement="bottom" nzsize="large" nztype="dashed"><!----><i _ngcontent-c6="" class="anticon anticon-delete ng-star-inserted" style="display: inline-block;"></i><span style="display: none;"></span></button><nz-popconfirm _nghost-c33="" class="ng-tns-c33-316 ng-star-inserted"><!----></nz-popconfirm></div><div _ngcontent-c6="" class="flex-between ng-star-inserted" style="position: relative;"><button _ngcontent-c6="" class="ansans display-none CancelDisplayNone rightAnsrChek" data-target="61dc9f624766d0002aee0a5b"></button><input _ngcontent-c6="" class=" radio-custom radioLable noSwipe" disabled="" type="radio" id="radio-1-61dc9f624766d0002aee0a5b" name="61dc9f624766d0002aee0a5b"><label _ngcontent-c6="" class="noshow radio-custom-label labelAns" contenteditable="true" for="radio-1-61dc9f624766d0002aee0a5b" data-target="61dc9f624766d0002aee0a5b" data-inde="1">עינית עם אורך מוקד גבוה, כדי שההגדלה לא תהיה גדולה</label><button _ngcontent-c6="" class="display-none CancelDisplayNone deletANS delete-fix-btn ant-btn ant-btn-dashed ant-btn-lg ant-btn-icon-only" nz-button="" nz-popconfirm="" nzplacement="bottom" nzsize="large" nztype="dashed"><!----><i _ngcontent-c6="" class="anticon anticon-delete ng-star-inserted" style="display: inline-block;"></i><span style="display: none;"></span></button><nz-popconfirm _nghost-c33="" class="ng-tns-c33-315 ng-star-inserted"><!----></nz-popconfirm></div><div _ngcontent-c6="" class="flex-between ng-star-inserted" style="position: relative;"><button _ngcontent-c6="" class="ansans display-none CancelDisplayNone" data-target="61dc9f624766d0002aee0a5b"></button><input _ngcontent-c6="" class=" radio-custom radioLable noSwipe" disabled="" type="radio" id="radio-2-61dc9f624766d0002aee0a5b" name="61dc9f624766d0002aee0a5b"><label _ngcontent-c6="" class="noshow radio-custom-label labelAns" contenteditable="true" for="radio-2-61dc9f624766d0002aee0a5b" data-target="61dc9f624766d0002aee0a5b" data-inde="2">עינית עם אורך מוקד בינוני, כדי שנחליט אחר כך למה להחליף</label><button _ngcontent-c6="" class="display-none CancelDisplayNone deletANS delete-fix-btn ant-btn ant-btn-dashed ant-btn-lg ant-btn-icon-only" nz-button="" nz-popconfirm="" nzplacement="bottom" nzsize="large" nztype="dashed"><!----><i _ngcontent-c6="" class="anticon anticon-delete ng-star-inserted" style="display: inline-block;"></i><span style="display: none;"></span></button><nz-popconfirm _nghost-c33="" class="ng-tns-c33-317 ng-star-inserted"><!----></nz-popconfirm></div><div _ngcontent-c6="" class="flex-between ng-star-inserted" style="position: relative;"><button _ngcontent-c6="" class="ansans display-none CancelDisplayNone" data-target="61dc9f624766d0002aee0a5b"></button><input _ngcontent-c6="" class=" radio-custom radioLable noSwipe" disabled="" type="radio" id="radio-3-61dc9f624766d0002aee0a5b" name="61dc9f624766d0002aee0a5b"><label _ngcontent-c6="" class="noshow radio-custom-label labelAns" contenteditable="true" for="radio-3-61dc9f624766d0002aee0a5b" data-target="61dc9f624766d0002aee0a5b" data-inde="3">קודם נחבר דיאגונל ואז את העינית</label><button _ngcontent-c6="" class="display-none CancelDisplayNone deletANS delete-fix-btn ant-btn ant-btn-dashed ant-btn-lg ant-btn-icon-only" nz-button="" nz-popconfirm="" nzplacement="bottom" nzsize="large" nztype="dashed"><!----><i _ngcontent-c6="" class="anticon anticon-delete ng-star-inserted" style="display: inline-block;"></i><span style="display: none;"></span></button><nz-popconfirm _nghost-c33="" class="ng-tns-c33-318 ng-star-inserted"><!----></nz-popconfirm></div></div></div><div _ngcontent-c6="" class="forbtn"><button _ngcontent-c6="" class="display-none margincentercollaps CancelDisplayNone ant-btn ant-btn-dashed ant-btn-lg" nz-button="" nz-tooltip="" nzplacement="bottom" nzsize="large" nztype="dashed"><!----><i _ngcontent-c6="" class="anticon anticon-plus ng-star-inserted" style="display: inline-block;"></i><span style=""> הוסף תשובה </span></button><nz-tooltip _nghost-c32="" class="ng-tns-c32-292 ng-star-inserted"><!----></nz-tooltip><button _ngcontent-c6="" class="btn  cta border-radius-BB bg-color-secondary ansCheck2 noSwipe" disabled="" data-target="61dc9f624766d0002aee0a5b" data-answer="1"><span _ngcontent-c6="" class="fr-box fr-rtl fr-inline" ><div class="fr-wrapper" dir="rtl"><div class="fr-element fr-view" dir="rtl" contenteditable="true" aria-disabled="false" spellcheck="true"><p>בדוק תשובה</p></div></div></span></button></div><div _ngcontent-c6="" class="feedback border-radius-BB display-none CancelDisplayNone2 " data-target="61dc9f624766d0002aee0a5b"><div _ngcontent-c6="" class="goodfeedback display-none  CancelDisplayNone2"><div _ngcontent-c6="" class="iconright"><img _ngcontent-c6="" class="iconVX showPrint replaceAssets" src="../../assets/img/V.png"><p _ngcontent-c6="" class="AnswerTitleGood" contenteditable="true" data-target="61dc9f624766d0002aee0a5b">תשובה נכונה</p></div><div _ngcontent-c6="" class="TextFeed"><p _ngcontent-c6="" class="fr-box fr-rtl fr-inline" ><div class="fr-wrapper" dir="rtl"><div class="fr-element fr-view" dir="rtl" contenteditable="true" aria-disabled="false" spellcheck="true"><p>נכון, הקשבתם יופי!</p></div></div></p></div></div><div _ngcontent-c6="" class="bedfeedback display-none CancelDisplayNone2 "><div _ngcontent-c6="" class="iconright"><img _ngcontent-c6="" class="iconVX replaceAssets" src="../../assets/img/X.png"><p _ngcontent-c6="" class="AnswerTitleBed" contenteditable="true" data-target="61dc9f624766d0002aee0a5b">תשובה לא נכונה</p></div><div _ngcontent-c6="" class="TextFeed"><p _ngcontent-c6="" class="fr-box fr-rtl fr-inline" ><div class="fr-wrapper" dir="rtl"><div class="fr-element fr-view" dir="rtl" contenteditable="true" aria-disabled="false" spellcheck="true"><p>טעות, צפו שוב בסרטון...<br></p></div></div></p></div></div></div></div></div></section></div><div id="61dc9fd74766d0002aee0a5d" class="menuBarOnOver class_61dc9fd74766d0002aee0a5d " > <div _ngcontent-c6="" id="61dc9fd74766d0002aee0a5d" class="class_61dc9fd74766d0002aee0a5d"><section _ngcontent-c6="" class="template-container     wow fadeIn" style="visibility: visible;"><div _ngcontent-c6="" class="col-lg-9 col-centered"><div _ngcontent-c6="" class="tempalte-h4 bold fr-box fr-rtl fr-inline" ><div class="fr-wrapper" dir="rtl"><div class="fr-element fr-view" dir="rtl" contenteditable="true" aria-disabled="false" spellcheck="true"><p>סוגי עיניות</p></div></div></div></div></section></div></div><div id="61dc9fcb4766d0002aee0a5c" class="menuBarOnOver class_61dc9fcb4766d0002aee0a5c " > <div _ngcontent-c6="" id="61dc9fcb4766d0002aee0a5c" class="class_61dc9fcb4766d0002aee0a5c"><section _ngcontent-c6="" class="template-container     wow fadeIn" style="visibility: visible;"><div _ngcontent-c6="" class="col-centered col-lg-9"><video _ngcontent-c6="" class="video100 border-radius-BB box-shadow    LinkUrlChange" controlslist="nodownload" id="61dc9fcb4766d0002aee0a5c_vid1" controls="" src="uploads/1641559768584.mp4"><source _ngcontent-c6="" class="LinkUrlChange" type="video/mp4" src="uploads/1641559768584.mp4"> אנו מצטערים, הדפדפן שלך אינו תומך ב-HTML 5 </video><div _ngcontent-c6="" class=" display-none  Not-ok CancelDisplayNone uploadBtnFloat"><button _ngcontent-c6="" nz-button="" nz-tooltip="" nzshape="circle" nzsize="large" nztype="dashed" class="ant-btn ant-btn-dashed ant-btn-circle ant-btn-lg ant-btn-icon-only"><!----><i _ngcontent-c6="" class="anticon anticon-video-camera ng-star-inserted" style="display: inline-block;"></i><span style="display: none;"><!----></span></button><nz-tooltip _nghost-c32="" class="ng-tns-c32-320 ng-star-inserted"><!----></nz-tooltip><br _ngcontent-c6=""><button _ngcontent-c6="" class="widthhight ant-btn ant-btn-dashed ant-btn-circle ant-btn-lg ant-btn-icon-only" nz-button="" nz-tooltip="" nzshape="circle" nzsize="large" nztype="dashed" img-change="61dc9fcb4766d0002aee0a5c_vid1"><!----><i _ngcontent-c6="" _ngcontent-c9="" class="anticon anticon-desktop font15 ng-star-inserted" nz-icon="" style="display: inline-block;"></i><span style="display: none;"></span></button><nz-tooltip _nghost-c32="" class="ng-tns-c32-321 ng-star-inserted"><!----></nz-tooltip><button _ngcontent-c6="" class="widthhight ant-btn ant-btn-dashed ant-btn-circle ant-btn-lg ant-btn-icon-only" nz-button="" nz-tooltip="" nzshape="circle" nzsize="large" nztype="dashed" img-change="61dc9fcb4766d0002aee0a5c_vid1"><!----><i _ngcontent-c6="" _ngcontent-c9="" class="anticon anticon-play-circle font15 ng-star-inserted" nz-icon="" style="display: inline-block;"></i><span style="display: none;"></span></button><nz-tooltip _nghost-c32="" class="ng-tns-c32-322 ng-star-inserted"><!----></nz-tooltip><button _ngcontent-c6="" class="widthhight ant-btn ant-btn-dashed ant-btn-circle ant-btn-lg ant-btn-icon-only" nz-button="" nz-tooltip="" nzshape="circle" nzsize="large" nztype="dashed" img-change="61dc9fcb4766d0002aee0a5c_vid1"><!----><i _ngcontent-c6="" _ngcontent-c9="" class="anticon anticon-sound font15 ng-star-inserted" nz-icon="" style="display: inline-block;"></i><span style="display: none;"></span></button><nz-tooltip _nghost-c32="" class="ng-tns-c32-323 ng-star-inserted"><!----></nz-tooltip><button _ngcontent-c6="" class="widthhight ant-btn ant-btn-dashed ant-btn-circle ant-btn-lg ant-btn-icon-only bg-color-primary color-white" nz-button="" nz-tooltip="" nzshape="circle" nzsize="large" nztype="dashed" img-change="61dc9fcb4766d0002aee0a5c_vid1"><!----><i _ngcontent-c6="" _ngcontent-c9="" class="anticon anticon-calculator font15 ng-star-inserted" nz-icon="" style="display: inline-block;"></i><span style="display: none;"></span></button><nz-tooltip _nghost-c32="" class="ng-tns-c32-324 ng-star-inserted"><!----></nz-tooltip></div></div></section></div></div><div id="61dc9ffa4766d0002aee0a5e" class="menuBarOnOver class_61dc9ffa4766d0002aee0a5e " > <section _ngcontent-c6="" class="template-container     wow fadeIn" style="visibility: visible;"><div _ngcontent-c6="" class="col-lg-9 col-centered"><!----><div _ngcontent-c6="" class="newQ border-radius-BB ng-star-inserted" data-target="61dc9ffa4766d0002aee0a5e"><div _ngcontent-c6="" class="qTitle border-radius-BB"><div _ngcontent-c6="" class="qtit inlineblock dirction-rtl fr-box fr-rtl fr-inline" ><div class="fr-wrapper" dir="rtl"><div class="fr-element fr-view" dir="rtl" contenteditable="true" aria-disabled="false" spellcheck="true"><p>מה הקוטר של הפוקוסר?</p></div></div></div><img _ngcontent-c6="" class="iconcc replaceAssets" src="../../assets/img/sheal.png"></div><div _ngcontent-c6="" class="boreder"></div><div _ngcontent-c6="" class="qAnsware"><div _ngcontent-c6="" class=""><!----><div _ngcontent-c6="" class="yesNoDiv ng-star-inserted" data-target="61dc9ffa4766d0002aee0a5e" data-inde="0"><button _ngcontent-c6="" class="center ansans display-none CancelDisplayNone yesNoButton rightAnsrChek" data-target="61dc9ffa4766d0002aee0a5e"></button><p _ngcontent-c6="" class="noshow yesNoq radio-custom-label labelAns" contenteditable="true" data-target="61dc9ffa4766d0002aee0a5e">2 אינץ'</p></div><div _ngcontent-c6="" class="yesNoDiv ng-star-inserted" data-target="61dc9ffa4766d0002aee0a5e" data-inde="1"><button _ngcontent-c6="" class="center ansans display-none CancelDisplayNone yesNoButton" data-target="61dc9ffa4766d0002aee0a5e"></button><p _ngcontent-c6="" class="noshow yesNoq radio-custom-label labelAns" contenteditable="true" data-target="61dc9ffa4766d0002aee0a5e">1.25 אינץ'</p></div></div></div><div _ngcontent-c6="" class="forbtn"><button _ngcontent-c6="" class="btn  cta border-radius-BB bg-color-secondary ansCheck2 yesNoansCheck noSwipe disableClass" data-target="61dc9ffa4766d0002aee0a5e" data-answer="0"><span _ngcontent-c6="" class="fr-box fr-rtl fr-inline" ><div class="fr-wrapper" dir="rtl"><div class="fr-element fr-view" dir="rtl" contenteditable="true" aria-disabled="false" spellcheck="true"><p>בדוק תשובה</p></div></div></span></button></div><div _ngcontent-c6="" class="feedback border-radius-BB display-none CancelDisplayNone2 " data-target="61dc9ffa4766d0002aee0a5e"><div _ngcontent-c6="" class="goodfeedback display-none  CancelDisplayNone2"><div _ngcontent-c6="" class="iconright"><img _ngcontent-c6="" class="iconVX showPrint replaceAssets" src="../../assets/img/V.png"><p _ngcontent-c6="" class="AnswerTitleGood" contenteditable="true" data-target="61dc9ffa4766d0002aee0a5e">תשובה נכונה</p></div><div _ngcontent-c6="" class="TextFeed"><p _ngcontent-c6="" class="fr-box fr-rtl fr-inline" ><div class="fr-wrapper" dir="rtl"><div class="fr-element fr-view" dir="rtl" contenteditable="true" aria-disabled="false" spellcheck="true"><p>נכון!</p></div></div></p></div></div><div _ngcontent-c6="" class="bedfeedback display-none CancelDisplayNone2 "><div _ngcontent-c6="" class="iconright"><img _ngcontent-c6="" class="iconVX replaceAssets" src="../../assets/img/X.png"><p _ngcontent-c6="" class="AnswerTitleBed" contenteditable="true" data-target="61dc9ffa4766d0002aee0a5e">תשובה לא נכונה</p></div><div _ngcontent-c6="" class="TextFeed"><p _ngcontent-c6="" class="fr-box fr-rtl fr-inline" ><div class="fr-wrapper" dir="rtl"><div class="fr-element fr-view" dir="rtl" contenteditable="true" aria-disabled="false" spellcheck="true"><p>טעות, צפו שוב בסרטון...<br></p></div></div></p></div></div></div></div></div></section></div>
+   </div>
+
+
+    <!--  ----------------            end of course           ---------------     -->
+
+    <div id="end" class="display-none chaptersData ">
+      <div class="confetti " >
+          <div class="confetti-piece"></div>
+          <div class="confetti-piece"></div>
+          <div class="confetti-piece"></div>
+          <div class="confetti-piece"></div>
+          <div class="confetti-piece"></div>
+          <div class="confetti-piece"></div>
+          <div class="confetti-piece"></div>
+          <div class="confetti-piece"></div>
+          <div class="confetti-piece"></div>
+          <div class="confetti-piece"></div>
+          <div class="confetti-piece"></div>
+          <div class="confetti-piece"></div>
+          <div class="confetti-piece"></div>
+      </div>
+  <div  class="wow slideInDown fullHeader  " style="background-image: url(uploads/1641557390885.jpg);">
+
+
+  <div class="darkOpacity"></div>
+  <img class="logoClient" src="uploads/1641560257462.png" alt="logo">
+  <img class="logoSliceWhite" src="./img/slicewhite.png" alt="logo" style="    z-index: 999999999;
+  position: absolute;
+  width: 90px;
+  left: 30px;
+  bottom: 25px;">
+
+          <div class="row frontHeader">
+              <div class="col-lg-12 col-centered">
+             
+
+                  <h1 class="bigFont    wow fadeInDown" data-wow-delay="0.4s" style="    color: white;
+                  text-align: center;
+                  padding: 50px 0px 0px;">
+          
+
+                  
+                  סיימת בהצלחה את
+                  <br/>
+                  המדריך המלא לטלסקופ</h1>
+                    <button class=" cta border-radius-BB bg-color-primary   glossyHover   GoToChapter" onclick="exitScreen()" style="    margin: 0px auto;
+                  padding: 10px 30px;">
+                            <span> סגור    </span>
+                            </button>
+                    
+
+        
+          </div>
+     
+
+        
+
+
+    </div>
+
+    <!--  ----------------            end of course           ---------------     -->
+
+    
+  <script src="js/app.min.js"></script>
+<script>
+$(document).ready(function(){
+
+
+
+  /// EXPORT INTERACTIVE VIDEO
+
+
+  var elements_arr = [{"options":[{"vid":"uploads/1641557365764.mp4","fullScreen":false,"autoplay":false,"controls":true,"muted":false}],"_id":"61d837364766d0002aee0827","chapterID":"61d818a04766d0002aee07eb","type":"וידאו","order":0,"content":"","__v":0},{"options":[{"txt":"<p>חלק 1 - הרכבת הטלסקופ</p>"}],"_id":"61d8376c4766d0002aee0828","chapterID":"61d818a04766d0002aee07eb","type":"כותרת משנית","order":1,"content":"","__v":0},{"options":[{"vid":"uploads/1641557811913.mp4","fullScreen":false,"autoplay":false,"controls":true,"muted":false}],"_id":"61dc9b354766d0002aee0a49","chapterID":"61d818a04766d0002aee07eb","type":"וידאו","order":2,"content":"","__v":0},{"options":[{"txt":"<p>איך עובד הטלסקופ</p>"}],"_id":"61dc9d3b4766d0002aee0a51","chapterID":"61d818a04766d0002aee07eb","type":"כותרת משנית","order":4,"content":"","__v":0},{"options":[{"vid":"uploads/1641558289139.mp4","fullScreen":false,"autoplay":false,"controls":true,"muted":false}],"_id":"61dc9d264766d0002aee0a50","chapterID":"61d818a04766d0002aee07eb","type":"וידאו","order":5,"content":"","__v":0},{"options":[{"questions":[{"q":"תשובה ראשונה"},{"q":"תשובה שניה"},{"q":"תשובה שלישית"}],"name":"שם השאלה","correct":[0,1],"score":0,"correctFid":"נכון מאוד","uncorrectFid":"לא נכון","title":"מה מאפיין את הטלסקופ הזה?","Answer":["1","2"],"AnswerS":["הוא מורכב מעדשות","יש לו מראה ראשית ומראה משנית","הוא נקרא על שם אייזיק ניוטון","החצובה שלו היא חצובה גרמנית משוונית"],"Bedfeedback":"<p>טעות, צפו שוב בסרטון...</p>","BedfeedbackRed":"תשובה לא נכונה","ButtonFeed":"בדוק תשובה","Goodfeedback":"<p>נכון מאוד!</p>","GoodfeedbackGreen":"תשובה נכונה"}],"_id":"61dc9d624766d0002aee0a52","chapterID":"61d818a04766d0002aee07eb","type":"שאלת רב ברירה","order":6,"content":"","__v":0},{"options":[{"txt":"<p>הרכבת הכוונת</p>"}],"_id":"61dc9ddb4766d0002aee0a54","chapterID":"61d818a04766d0002aee07eb","type":"כותרת משנית","order":7,"content":"","__v":0},{"options":[{"vid":"uploads/1641558467592.mp4","fullScreen":false,"autoplay":false,"controls":true,"muted":false}],"_id":"61dc9dcf4766d0002aee0a53","chapterID":"61d818a04766d0002aee07eb","type":"וידאו","order":8,"content":"","__v":0},{"options":[{"questions":[{"q":"תשובה שניה"},{"q":"תשובה שלישית"}],"title":"למה לא פותחים את המכסה של הטלסקופ עדיין?","correct":0,"score":0,"correctFid":"נכון מאוד","uncorrectFid":"לא נכון","Answer":"1","AnswerS":["כדי שהמראה הראשית לא תתמלא באדים","כדי שלא יפלו דברים על המראה הראשית","כי אלה שכחה לפתוח אותו","כדי שהמראה הראשית לא תתמלא באבק"],"Bedfeedback":"<p>טעות, צפו שוב בסרטון...</p>","BedfeedbackRed":"תשובה לא נכונה","ButtonFeed":"בדוק תשובה","Goodfeedback":"<p>נכון!</p>","GoodfeedbackGreen":"תשובה נכונה"}],"_id":"61dc9e1e4766d0002aee0a55","chapterID":"61d818a04766d0002aee07eb","type":"שאלת חד ברירה","order":9,"content":"","__v":0},{"options":[{"txt":"<p>סוגי כוונות</p>"}],"_id":"61dc9eab4766d0002aee0a57","chapterID":"61d818a04766d0002aee07eb","type":"כותרת משנית","order":10,"content":"","__v":0},{"options":[{"vid":"uploads/1641559109435.mp4","fullScreen":false,"autoplay":false,"controls":true,"muted":false}],"_id":"61dc9e9d4766d0002aee0a56","chapterID":"61d818a04766d0002aee07eb","type":"וידאו","order":11,"content":"","__v":0},{"options":[{"correct":0,"score":0,"GoodfeedbackGreen":"תשובה נכונה","Goodfeedback":"<p>נכון, הקשבתם יופי!</p>","ButtonFeed":"בדוק תשובה","BedfeedbackRed":"תשובה לא נכונה","Bedfeedback":"<p>טעות, צפו שוב בסרטון...</p>","AnswerS":["כוונת אופטית, כי קל יותר לעשות איתה דילוג כוכבים","כוונת נקודה אדומה, כי אם היא מכוונת מדויק קל מאוד לכוון איתה"],"Answer":"1","title":"בסוג כוונת אלה מעדיפה להשתמש?"}],"_id":"61dc9ed24766d0002aee0a58","chapterID":"61d818a04766d0002aee07eb","type":"נכון לא נכון","order":12,"content":"","__v":0},{"options":[{"txt":"<p>הרכבת העינית</p>"}],"_id":"61dc9f224766d0002aee0a5a","chapterID":"61d818a04766d0002aee07eb","type":"כותרת משנית","order":13,"content":"","__v":0},{"options":[{"vid":"uploads/1641559521124.mp4","fullScreen":false,"autoplay":false,"controls":true,"muted":false}],"_id":"61dc9f174766d0002aee0a59","chapterID":"61d818a04766d0002aee07eb","type":"וידאו","order":14,"content":"","__v":0},{"options":[{"questions":[{"q":"תשובה שניה"},{"q":"תשובה שלישית"}],"title":"איזו עינית נרכיב קודם?","correct":0,"score":0,"correctFid":"נכון מאוד","uncorrectFid":"לא נכון","Answer":"1","AnswerS":["עינית עם אורך מוקד נמוך, כדי שההגדלה תהיה גדולה","עינית עם אורך מוקד גבוה, כדי שההגדלה לא תהיה גדולה","עינית עם אורך מוקד בינוני, כדי שנחליט אחר כך למה להחליף","קודם נחבר דיאגונל ואז את העינית"],"Bedfeedback":"<p>טעות, צפו שוב בסרטון...</p>","BedfeedbackRed":"תשובה לא נכונה","ButtonFeed":"בדוק תשובה","Goodfeedback":"<p>נכון, הקשבתם יופי!</p>","GoodfeedbackGreen":"תשובה נכונה"}],"_id":"61dc9f624766d0002aee0a5b","chapterID":"61d818a04766d0002aee07eb","type":"שאלת חד ברירה","order":15,"content":"","__v":0},{"options":[{"txt":"<p>סוגי עיניות</p>"}],"_id":"61dc9fd74766d0002aee0a5d","chapterID":"61d818a04766d0002aee07eb","type":"כותרת משנית","order":16,"content":"","__v":0},{"options":[{"vid":"uploads/1641559768584.mp4","fullScreen":false,"autoplay":false,"controls":true,"muted":false}],"_id":"61dc9fcb4766d0002aee0a5c","chapterID":"61d818a04766d0002aee07eb","type":"וידאו","order":17,"content":"","__v":0},{"options":[{"correct":0,"score":0,"GoodfeedbackGreen":"תשובה נכונה","Goodfeedback":"<p>נכון!</p>","ButtonFeed":"בדוק תשובה","BedfeedbackRed":"תשובה לא נכונה","Bedfeedback":"<p>טעות, צפו שוב בסרטון...</p>","AnswerS":["2 אינץ'","1.25 אינץ'"],"Answer":0,"title":"מה הקוטר של הפוקוסר?"}],"_id":"61dc9ffa4766d0002aee0a5e","chapterID":"61d818a04766d0002aee07eb","type":"נכון לא נכון","order":18,"content":"","__v":0}];
+  var IE = msieversion();
+
+  var video_interactive = []
+
+  if(elements_arr){
+      elements_init(elements_arr);
+      init_freestyle_events();
+  }
+
+  if(video_interactive.length > 0){
+    video_interactive.forEach(function(element) {
+      console.log(element);
+      video_init(element._id,element);
+    });
+  }
+
+
+
+  console.log('video_interactive',video_interactive);
+
+
+  $('.carousel-inner .item:first').addClass('active');
+  $('.carousel-indicators li:first').addClass('active');
+
+
+
+  // $('.back9').css('transform','rotateY(0deg)');
+  // $('.front9').css('transform','rotateY(180deg)');
+
+
+    
+
+
+
+
+//  -- iframe on freestyle with chapter:
+  $(window).on('blur',function(e) {    
+    if($(this).data('mouseIn') != 'yes')return;
+    $('.GoToChapter iframe').filter(function(){
+        return $(this).data('mouseIn') == 'yes';
+    }).trigger('iframeclick');    
+});
+
+$(window).mouseenter(function(){          
+    $(this).data('mouseIn', 'yes');
+}).mouseleave(function(){
+    $(this).data('mouseIn', 'no');
+});
+
+$('.GoToChapter iframe').mouseenter(function(){
+    $(this).data('mouseIn', 'yes');
+    $(window).data('mouseIn', 'yes');
+}).mouseleave(function(){
+  $(window).focus();
+  $(this).data('mouseIn', null);
+});
+
+$('.GoToChapter iframe').on('iframeclick', function(){
+    // console.log('Clicked inside iframe',$(this).closest('.GoToChapter'));
+    $(this).closest('.GoToChapter').click();
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+$(".flip-container2").attr("data-flip","true");
+
+  $("[lang='x-empty-star']").removeClass("h-half-star-class")
+
+  var replaceAssets = document.getElementsByClassName("replaceAssets");
+for(var i = 0; i < replaceAssets.length; i++)
+{
+  // console.log('replaceAssets[i]',replaceAssets[i]);
+  var vidd = replaceAssets[i].outerHTML;
+  var vidSRC = vidd.replace('../../assets/', '');
+  replaceAssets[i].outerHTML = vidSRC;
+
+}
+
+
+$(".front5.backCard").addClass("back9");
+$(".front5.backCard").removeClass("front9");
+
+
+$(".flip-container3").addClass("flip-container2")
+$(".flip-container3").removeClass("flip-container3")
+
+$(".grid-third.cardshowdelet").removeClass("grid-third")
+$(".grid-row.min-hight-900-card").addClass("flex-around")
+
+$(".min-hight-900-card").removeClass("min-hight-900-card")
+
+$(".flip-container2").each(function () {
+
+  console.log("flip card")
+  var flipped = $(this).attr("data-flip");
+  var target = $(this).attr("data-target");
+  var inde = $(this).attr("data-inde");
+  console.log("sadasdasdasdasdasd", flipped)
+  var flipper = document.getElementById('flipper_' + target + '_' + inde);
+  if (flipper) {
+    var element = elements_arr.filter(function(el) {return el._id == target})[0];
+    var card = element.options[inde];
+    var front = document.getElementById('front_' + target + '_' + inde);
+    var back = document.getElementById('back_' + target + '_' + inde);
+    if (card.flip) {
+      flipper.style.transform = 'rotateY(0deg)';
+      if (IE) {
+        back.style.transform = 'rotateY(180deg)';
+        front.style.transform = 'rotateY(0deg)';
+      }
+    } else {
+      flipper.style.transform = 'rotateY(180deg)';
+      if (IE) {
+        front.style.transform = 'rotateY(180deg)';
+        back.style.transform = 'rotateY(0deg)';
+      }
+    }
+  } else {
+    if (flipped == "false") {
+
+      console.log('.back9[data-target=' + target + '][data-inde=' + inde + ']')
+      $('.back9[data-target=' + target + '][data-inde=' + inde + ']').css('transform', 'rotateY(0deg)');
+      $('.front9[data-target=' + target + '][data-inde=' + inde + ']').css('transform', 'rotateY(180deg)');
+
+      $(this).attr("data-flip", "true");
+      console.log('true part :' + flipped);
+    }
+    else {
+      $('.back9[data-target=' + target + '][data-inde=' + inde + ']').css('transform', 'rotateY(180deg)');
+      $('.front9[data-target=' + target + '][data-inde=' + inde + ']').css('transform', 'rotateY(0deg)');
+      $(this).attr("data-flip", "false");
+      console.log('else part :' + flipped);
+    }
+  }
+
+
+
+})
+
+  
+$(".cheakBoxS").prop("disabled",false);
+  $(".noshow").removeClass("noshow");
+$(".ansCheck2").addClass("ansCheck");
+$(".ansCheck2.yesNoansCheck").removeClass("ansCheck");
+$(".ansCheck2.yesNoansCheck").addClass("ansCheck3");
+$(".overflowDemo").removeClass("overflowDemo");
+
+
+
+
+$(document).on("click",".yesNoDiv",function(){
+
+  target=$(this).attr("data-target");
+  $(".yesNoDiv[data-target="+target+"]").removeClass("chosen");
+  $(this).addClass("chosen");
+$(".ansCheck3[data-target="+target+"]").removeClass("disableClass")
+});
+
+
+$(document).on("click",".ansCheck3",function(){
+  var target=$(this).attr("data-target");
+  var Answer=$(this).attr("data-Answer");
+
+  var element = elements_arr.filter(function(el) {return el._id == target})[0];
+
+  
+  var Qanswer=$(".yesNoDiv.chosen[data-target="+target+"]").attr("data-inde")
+ 
+ if(Qanswer == Answer){
+   console.log("good");
+   $(".feedback[data-target="+target+"]").removeClass("display-none");
+   $(".feedback[data-target="+target+"] .goodfeedback").removeClass("display-none");
+
+   $(".yesNoDiv.chosen[data-target="+target+"]").addClass("greenClass");
+   $(".yesNoDiv[data-target="+target+"]").addClass("disableClass");
+
+   $(".yesNoDiv.chosen[data-target="+target+"]").removeClass("disableClass")
+  // var conuntAns= $(".ansCheck").length
+  // var newsum=100/conuntAns;
+  // console.log(newsum,"conuntAns")
+  // moreScore(conuntAns);
+  moreScore(element.options[0].score);
+  console.log(window.realScore);
+
+ }else{
+   console.log("bed");
+   $(".feedback[data-target="+target+"]").removeClass("display-none");
+   $(".feedback[data-target="+target+"] .bedfeedback").removeClass("display-none");
+
+   $(".yesNoDiv.chosen[data-target="+target+"]").addClass("redClass");
+   $(".yesNoDiv[data-target="+target+"]").addClass("greenBorder");
+   $(".yesNoDiv.chosen[data-target="+target+"]").removeClass("greenBorder");
+
+   $(".yesNoDiv[data-target="+target+"]").addClass("disableClass");
+
+   $(".yesNoDiv.chosen[data-target="+target+"]").removeClass("disableClass")
+
+   moreScore(0);
+   console.log(window.realScore);
+
+ }
+
+ 
+
+
+
+ $(this).remove();
+
+})
+
+
+$(document).on( "click",".js-collapse-element",function(e) {
+ 
+  if($(this).hasClass("collapse-list-element--expanded")){
+    $(".js-collapse-element").removeClass("collapse-list-element--expanded");
+  }else{
+    $(".js-collapse-element").removeClass("collapse-list-element--expanded");
+    $(this).toggleClass("collapse-list-element--expanded");
+  }
+
+})
+})
+
+
+var caruselIRight = document.getElementsByClassName("caruselIRight");
+var caruselILeft = document.getElementsByClassName("caruselILeft");
+for(var i = 0; i < caruselILeft.length; i++){
+  caruselILeft[i].style.display = "none";
+}
+setTimeout(function(){
+for(var i = 0; i < caruselIRight.length; i++){
+    caruselIRight[i].style.display = "block";
+}
+},1000)
+
+
+var caruselIndicator = document.getElementsByClassName("caruselIndicator");
+for(var i = 0; i < caruselIndicator.length; i++)
+{
+  caruselIndicator[i].classList.remove("active");
+  if(i == 0){
+    caruselIndicator[i].classList.add("active");
+  }
+}
+
+
+
+var replaceAssets = document.getElementsByClassName("replaceAssets");
+for(var i = 0; i < replaceAssets.length; i++)
+{
+  // console.log('replaceAssets[i]',replaceAssets[i]);
+  var vidd = replaceAssets[i].outerHTML;
+  var vidSRC = vidd.replace('../../assets/', '');
+  replaceAssets[i].outerHTML = vidSRC;
+
+}
+
+
+
+
+var itemCarusel = document.getElementsByClassName("item");
+
+for(var i = 0; i < itemCarusel.length; i++)
+{
+  itemCarusel[i].classList.remove("active");
+  if(i == 0){
+    itemCarusel[i].classList.add("active");
+  }
+}
+
+
+</script>
+
+
+  <style>
+  /* hebrew */ @font-face {     font-family: 'Assistant';     font-style: normal;     font-weight: 400;     font-display: swap;     src: local('Assistant'), local('Assistant-Regular'), url(./fonts/theme/2sDcZGJYnIjSi6H75xkzamW5Kb8VZBHR.woff2) format('woff2');     unicode-range: U+0590-05FF, U+20AA, U+25CC, U+FB1D-FB4F;   }   /* latin */   @font-face {     font-family: 'Assistant';     font-style: normal;     font-weight: 400;     font-display: swap;     src: local('Assistant'), local('Assistant-Regular'), url(./fonts/theme/2sDcZGJYnIjSi6H75xkzaGW5Kb8VZA.woff2) format('woff2');     unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;   }   /* hebrew */   @font-face {     font-family: 'Assistant';     font-style: bold;     font-weight: 700;     font-display: swap;     src: local('Assistant Bold'), local('Assistant-Bold'), url(./fonts/theme/2sDZZGJYnIjSi6H75xk700CsBp0YTivYthYl.woff2) format('woff2');     unicode-range: U+0590-05FF, U+20AA, U+25CC, U+FB1D-FB4F;   }   /* latin */   @font-face {     font-family: 'Assistant';     font-style: bold;     font-weight: 700;     font-display: swap;     src: local('Assistant Bold'), local('Assistant-Bold'), url(./fonts/theme/2sDZZGJYnIjSi6H75xk700CsBJ0YTivYtg.woff2) format('woff2');     unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;   }  body, html, .clientFont button, .clientFont input, .clientFont optgroup, .clientFont select, .clientFont textarea, .template-container, .tempalte-h3, .template-p-with-h3, .fontSize600, .chapterNameInput, .tempalte-2p-left, .tempalte-2p-right, .template-p, .tempalte-h4, .template-note-circle, .template-quote-autor, .template-small-circle, .template-note-container, .fr-element, .fr-element p, .fr-element strong, .fr-element u, .fr-element s, .fr-element a, .fr-element line, li.templater-li-numbers::before, a, .P-Poa, .P-Poa span, .P-Poa p, .template-container p, .fr-element p, .fr-element, .fr-view, .fr-view p, .H1-Poa, .prevchapter, .nextchpatername, .font-size-18px, h1 { 	box-sizing: border-box; 	-moz-box-sizing: border-box; 	-webkit-box-sizing: border-box; 	font-family: 'Assistant' !important; 	font-weight: normal; 	font-style: normal; 	/* direction: rtl;          line-height: 1.5;*/ } a, li, span, p, .P-Poa, .P-Poa span, .P-Poa p { 	font-family: 'Assistant'; 	font-weight: normal; 	font-style: normal; } strong { 	font-family: 'Assistant'!important; 	font-weight: bold !important; } .font-bold-p p { 	font-family: 'Assistant'!important; 	font-weight: bold !important; } .font-light-p p { 	font-family: 'Assistant'!important; } .qut-font { 	font-family: "Assistant"; } .MarkPro { 	font-family: "Assistant"; } .MarkWebProBook-font { 	font-family: "Assistant", sans-serif; }
+
+  
+
+
+ body .chet-full:after {
+    border-right-color: #e7c584;
+}
+
+
+  body .panel-heading[aria-expanded="true"]{
+    border-color: #202d90!important;
+  }
+body a:hover{
+    color: #202d90 !important;
+  }
+
+  html body .ratingText {
+    font-size: 20px !important;
+    color: #000000;
+
+  }
+ body .panel-heading.transition-05.collapsed.tabs.activeTab{
+    border-right: 2px solid #202d90 !important;
+  }
+
+ body .line li:before,
+ body .circle li:before,
+ body .bulets li:before,
+ body .chet-outline
+{
+background: #202d90 !important;
+}
+
+body .circle li:before {right: -20px;
+}
+
+body .bulets li:before {right: -10px;
+}
+
+
+body .chet-outline:after {
+  border-left-color: #202d90;
+
+}
+
+button.ansans{
+  right: -20px;
+      }
+      button.ansans2{
+  right: -20px;
+      }
+
+  .template-container{
+    margin: 22px 0px;
+  }
+  elementMargin
+
+
+   html body .themeControl-modal{
+      background:#ffffff !important;
+    }
+
+    .box-shadow {
+      box-shadow:0 2px 6px rgba(0, 0, 0, 0.4) !important;
+  }
+  
+
+    .progMenuLi {
+      right: 0px;
+  }
+
+
+    .template-container {
+      direction: rtl !important;
+    }
+
+
+    .btn.cta.ansCheck2{
+      direction: rtl !important;
+    }
+    
+
+    html,
+    body {
+  direction: rtl !important;
+  text-align: right !important;
+  font-size: 15px;
+  color: #000000 !important;
+  word-break: break-word !important;
+  background-color:  #ffffff !important;
+    }
+
+    html body p {
+      font-size: 20px !important;
+      word-break: break-word !important;
+  }
+
+  .menu-header-bg h1{
+    text-align:  right !important;
+    direction: rtl !important;
+  }
+
+  .border-radius-BB {
+    border-radius: 20pxpx !important;
+}
+
+.border-radius-BB::after {
+  border-radius: 20pxpx;
+}
+
+.border-radius-BB-right{
+  border-radius: 0px 20pxpx 20pxpx 0px;
+}
+
+/* primary */
+
+.bg-color-primary {
+  background: #202d90 !important;
+  background-color: #202d90 !important;
+}
+
+
+body .carousel-indicators .active{
+  background: #202d90 !important;
+  background-color: #202d90 !important;
+}
+
+.hoverBgPrimary:hover {
+background: #202d90!important;
+color: white;
+}
+
+
+/* secondary */
+
+.bg-color-secondary,
+.chet-full {
+  background: #e7c584!important;
+  color: white !important;
+}
+
+
+.hoverBgSecondary:hover {
+  background: #e7c584!important;
+  color: white;
+}
+
+/* lock-chapter */
+
+.lock-chapter:hover {
+  background: null!important;
+  color: #e7c584!important;
+}
+
+/* chapter title background */
+
+.bg-light-color {
+background: null!important;
+}
+
+.border-light-color {
+border: 1px solid null!important;
+}
+
+.bg-light-color-top {
+background: #eeeeee;
+}
+
+/* course Title */
+
+.bigFont {
+font-size: 3.8rem!important;
+font-weight: bold;
+text-align:  right !important;
+margin-left: 0px;
+margin-right: 0px;
+}
+
+/* chapter Title  & big title block*/
+
+.chapter-title{
+font-size: 2.8rem!important;
+}
+
+/* chapter secondary Title */
+
+html body .tempalte-h4 p{
+font-size: 1.8rem!important;
+}
+
+
+h1, h2, h3, h4, h5, h6 {
+margin-top: 0;
+margin-bottom: .5em;
+color: #000000;
+font-weight: 500;
+}
+
+.panel-heading.transition-05.collapsed div{
+  font-size: 20px !important;
+    word-break: break-word !important;
+}
+
+body .panel-heading.transition-05.collapsed.tabs  {
+  float: right!important;
+}
+
+
+  </style>   
+</body>
+
+</html>  
